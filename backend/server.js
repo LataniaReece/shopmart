@@ -7,6 +7,8 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors')
 
+const connectDB = require('./config/db.js')
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const productRoutes = require('./routes/products');
@@ -18,18 +20,7 @@ app.use(cors())
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-const dbUrl = process.env.DB_URL;
-
-mongoose.connect(dbUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () =>{
-    console.log('Database connected');
-});
+connectDB();
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

@@ -1,30 +1,29 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Badge, MenuItem, Menu, Typography} from '@material-ui/core';
-import { ShoppingCart } from '@material-ui/icons'
-
-import logo from '../../assets/navlogo.png'
-import useStyles from './styles'
+import { Box, Typography, Button, IconButton, Toolbar, AppBar } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Navbar = () => {
-    const classes = useStyles();
     return (
         <>
-            <AppBar position="fixed" className={classes.appBar} color="inherit"> 
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title} color="inherit">
-                        <img src={logo} alt="Commerce.js" height="25px" className={classes.image} />
-                        Commerce.js
-                    </Typography>
-                    <div className={classes.grow}/>
-                    <div className={classes.button}>
-                        <IconButton aria-label="Show cart items" color="inherit">
-                            <Badge badgeContent={2} color="secondary">
-                                <ShoppingCart />
-                            </Badge>
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            sx={{ mr: 2 }}
+                        >
+                            <MenuIcon />
                         </IconButton>
-                    </div>
-                </Toolbar>
-            </AppBar>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            News
+                        </Typography>
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                </AppBar>
+            </Box>
         </>
     )
 }
