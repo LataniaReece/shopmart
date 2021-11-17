@@ -34,3 +34,10 @@
   padding-top: 15%;
   justify-content: center;
 }
+
+/*  =================================== Products ===================================================== */
+
+.product-filters .left-section,
+.product-filters .right-section{ 
+  display: flex;
+}
