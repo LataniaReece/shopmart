@@ -1,76 +1,46 @@
-import React, {useState} from 'react'
-import {Box, FormControl, InputLabel, Select, MenuItem, Container, Typography} from '@mui/material'
- 
-const ProductListComponent = ({ home = false, }) => {
-    const [size, setSize] = useState('');
-    const [color, setColor] = useState('');
+import React, {useEffect}from 'react' 
+import { useDispatch, useSelector } from 'react-redux'
+import { Grid, Card, CardMedia, CardContent, CardActions, Typography, Button} from '@mui/material'
+import { getProducts } from '../../actions/productAction'
+import Spinner from '../Spinner'
+
+
+const ProductListComponent = ({category, filters, sort}) => {
+
+    const dispatch = useDispatch()
+
+    const productList = useSelector(state => state.productList)
+    let { loading, error, products } = productList
+
+    useEffect(() => {
+        dispatch(getProducts(category))
+    }, [])
+
 
     return (
-        <Container>
-            <Box className="product-filters" sx={{ display: 'flex', marginTop: home ? '3rem' : '', justifyContent: 'space-between'}}>
-                <div className="left-section">
-                    <div style={{display: 'flex', alignItems: 'center', marginRight: '1rem'}}>
-                        <Typography variant="h5" sx={{fontSize: '1.5rem'}}>Filter Products:</Typography>
-                    </div>
-                    <Box sx={{ minWidth: 120, mr:3 }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="size">Size</InputLabel>
-                            <Select
-                                labelId="size"
-                                id="size-select"
-                                value={size}
-                                label="Size"
-                                onChange={(e) => {setSize(e.target.value)}}
-                            >
-                                <MenuItem value={"S"}>Small</MenuItem>
-                                <MenuItem value={"M"}>Medium</MenuItem>
-                                <MenuItem value={"L"}>Large</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                    <Box sx={{ minWidth: 120 }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="size">Color</InputLabel>
-                            <Select
-                                labelId="color"
-                                id="size-color"
-                                value={color}
-                                label="color"
-                                onChange={(e) => {setColor(e.target.value)}}
-                            >
-                                <MenuItem value={"black"}>Black</MenuItem>
-                                <MenuItem value={"yellow"}>Yellow</MenuItem>
-                                <MenuItem value={"orange"}>Orange</MenuItem>
-                                <MenuItem value={"blue"}>Blue</MenuItem>
-                                <MenuItem value={"khaki"}>Khaki</MenuItem>
-                                <MenuItem value={"beige"}>Beige</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </div>
-                <div className="right-section">
-                    <div style={{display: 'flex', alignItems: 'center', marginRight: '1rem'}}>
-                        <Typography variant="h5" sx={{fontSize: '1.5rem'}}>Sort Products:</Typography>
-                    </div>
-                    <Box sx={{ minWidth: 120 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="size">Size</InputLabel>
-                                <Select
-                                    labelId="size"
-                                    id="size-select"
-                                    value={size}
-                                    label="Size"
-                                    onChange={(e) => {setSize(e.target.value)}}
-                                >
-                                    <MenuItem value={"S"}>Small</MenuItem>
-                                    <MenuItem value={"M"}>Medium</MenuItem>
-                                    <MenuItem value={"L"}>Large</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    </div>
-                </Box>
-        </Container>
+        <Grid className="products-container" container spacing={{ xs: 2, md: 3 }}>
+            {loading ? <Spinner /> : (
+                products.map((product, index) => {
+                    return  <Grid item sx={{ width:'100%' }} xs={12} sm={6} md={3} key={index}>
+                     <Card sx={{ width:'100%'}}>
+                        <CardMedia
+                            component="img"
+                            height="300"
+                            image={product.image}
+                            alt={product.title}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="p" sx={{ color: 'text.primary', fontSize: 22, fontWeight: 'medium' }} className="product-title">{product.title}</Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small">Share</Button>
+                            <Button size="small">Learn More</Button>
+                        </CardActions>
+                    </Card>
+                    </Grid>
+                })
+            )}
+        </Grid>
     )
 }
 

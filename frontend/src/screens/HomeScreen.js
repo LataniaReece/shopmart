@@ -1,12 +1,12 @@
 import React from 'react'
-import ProductListComponent from '../components/products/ProductListComponent'
+import ProductsComponent from '../components/products/ProductsComponent'
 import ShowcaseComponent from '../components/ShowcaseComponent'
 
 const HomeScreen = () => {
     return (
         <>
             <ShowcaseComponent />
-            <ProductListComponent home={true}/>
+            <ProductsComponent home={true}/>
         </>
     )
 }
