@@ -1,24 +1,32 @@
-import React, {useState}from 'react'
-import {Box, FormControl, InputLabel, Select, MenuItem, Container, Typography, Button, Grid} from '@mui/material'
+import React, {useState, useEffect} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router';
 
-const product = {
-        title: 'Orange Coat',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-        image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=872&q=80",
-        categories: ["coat", "men"],
-        size: ["S", "M", "L"],
-        color: ["orange"],
-        price: 30,
-        inStock: true
-}
+import {Box, FormControl, InputLabel, Select, MenuItem, Container, Typography, Button, Grid} from '@mui/material'
+import { getProductDetail } from '../../actions/productAction'
+import Spinner from '../../components/Spinner'
 
 const ProductDetailScreen = () => {
     const [size, setSize ] = useState('')
 
+    const dispatch = useDispatch()
+    const { id } = useParams();
+
+    const productDetail = useSelector(state => state.productDetail)
+    let { loading, error, product } = productDetail
+
+    useEffect(() => {
+        console.log(id)
+        dispatch(getProductDetail(id))
+    }, [id])
+
     return (
+        <>
         <div className="product-detail-container">
+            {loading && <Spinner />}
+            {product && product._id && (
             <Container>
-            <Typography variant="h3" sx={{fontWeight: "light", mt: 4, mb:2, fontSize: 38}}>{product.title}</Typography>
+                <Typography variant="h3" sx={{fontWeight: "light", mt: 4, mb:2, fontSize: 38}}>{product.title}</Typography>
                 <Grid container spacing={{ xs: 2, md: 3}}>
                     <Grid item sx={{ width:'100%'}} xs={12} md={6}>
                         <img src={product.image} alt={product.title} /> 
@@ -61,7 +69,9 @@ const ProductDetailScreen = () => {
                     </Grid>
                 </Grid>
             </Container>
+            )}
         </div>
+        </>
     )
 }
 

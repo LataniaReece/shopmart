@@ -12,17 +12,7 @@ const ProductsListScreen = ({ home=false }) => {
     const location = useLocation();
     const category = location.pathname.split('/')[3]
 
-
-    const handleFilters = (e) =>{
-        const value = e.target.value;
-        setFilters({
-            ...filters,
-            [e.target.name]: value
-        })
-    }
-
     useEffect(() => {
-        console.log(category)
     }, [category])
 
     return (

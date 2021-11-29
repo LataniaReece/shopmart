@@ -21,11 +21,11 @@ const App = () => {
                 <Router>
                     <main style={{ height: "100%", width: "100%", minWidth: "100%" }}>
                         <Navbar />
-                        <Routes>
-                            <Route path='/products/category/:category' element={<ProductsListScreen/>} />
-                            <Route path='/products/:id' element={<ProductDetailScreen/>} />
-                            <Route path='/' element={<HomeScreen/>} />
-                        </Routes>
+                            <Routes>
+                                <Route path='/products/category/:category' element={<ProductsListScreen/>} />
+                                <Route path='/products/:id' element={<ProductDetailScreen/>} />
+                                <Route path='/' element={<HomeScreen/>} />
+                            </Routes>
                         <Footer />
                     </main>
                 </Router>

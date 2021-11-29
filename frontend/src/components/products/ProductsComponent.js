@@ -56,6 +56,7 @@ const ProductsComponent = ({ home = false, category}) => {
                                 <MenuItem value={"blue"}>Blue</MenuItem>
                                 <MenuItem value={"khaki"}>Khaki</MenuItem>
                                 <MenuItem value={"beige"}>Beige</MenuItem>
+                                <MenuItem value={"pink"}>Pink</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>

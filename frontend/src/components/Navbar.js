@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 import { Box, Typography, Button, IconButton, Toolbar, AppBar, Drawer, List, ListItemButton, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -29,9 +29,9 @@ const Navbar = () => {
                         >
                         <MenuIcon onClick={toggleDrawer(true)} />
                         </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            News
-                        </Typography>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                <Link to="/">ShopMart</Link>
+                            </Typography>
                         <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
@@ -53,7 +53,7 @@ const Navbar = () => {
                             <ListItemText primary="Women" />
                             </ListItem>
                         </ListItemButton>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => navigate('/products/category/men')}>
                             <ListItem disablePadding>
                             <ListItemText primary="Men" />
                             </ListItem>
