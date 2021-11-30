@@ -76,6 +76,10 @@ a{
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin-right: 0.4rem;
 }
 
 .product-detail-container img{

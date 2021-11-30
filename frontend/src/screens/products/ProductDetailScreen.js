@@ -8,6 +8,8 @@ import Spinner from '../../components/Spinner'
 
 const ProductDetailScreen = () => {
     const [size, setSize ] = useState('')
+    const [color, setColor ] = useState('')
+    const [quantity, setQuantity] = useState(1)
 
     const dispatch = useDispatch()
     const { id } = useParams();
@@ -19,6 +21,28 @@ const ProductDetailScreen = () => {
         console.log(id)
         dispatch(getProductDetail(id))
     }, [id])
+
+    const displaySize = (size) => {
+        if(size === 'S'){
+            return 'Small'
+        } else if (size === 'M'){
+            return 'Medium'
+        } else if (size === 'L'){
+            return 'Large'
+        }
+    }
+
+    const handleQuantity = (type) => {
+        if(type === 'sub'){
+            quantity > 1 && setQuantity(quantity - 1)
+        } else if (type === 'add'){
+            setQuantity(quantity + 1)
+        }
+    }
+
+    const handleClick = () => {
+        // update cart
+    }
 
     return (
         <>
@@ -38,8 +62,8 @@ const ProductDetailScreen = () => {
                             <Box sx={{display: 'flex'}}>
                                 <Typography variant="p" sx={{fontSize: 20, mr: 1}}>Color</Typography>
                                 <div className="colors">
-                                    {product.color.map( color => {
-                                        return  <div className="color" style={{backgroundColor: `${color}`}}></div>
+                                    {product.color.map( c => {
+                                        return  <button className="color" style={{backgroundColor: `${c}`}} key={c} onClick={()=>setColor(c)}></button>
                                     })}
                                 </div>
                             </Box> 
@@ -53,19 +77,19 @@ const ProductDetailScreen = () => {
                                     label="Size"
                                     onChange={(e) => {setSize(e.target.value)}}
                                 >
-                                    <MenuItem value={"S"}>Small</MenuItem>
-                                    <MenuItem value={"M"}>Medium</MenuItem>
-                                    <MenuItem value={"L"}>Large</MenuItem>
+                                    {product.size.map( size => {
+                                        return  <MenuItem value={size} key={size}>{displaySize(size)}</MenuItem>
+                                    })}
                                 </Select>
                                 </FormControl>
                             </Box>
                         </Box>   
                         <div className="quantity-counter">
-                            <button><i class="fas fa-minus"></i></button>
-                            <span className="number">1</span>
-                            <button><i class="fas fa-plus"></i></button>
+                            <button onClick={()=>handleQuantity('sub')}><i class="fas fa-minus"></i></button>
+                            <span className="number">{quantity}</span>
+                            <button onClick={()=>handleQuantity('add')}><i class="fas fa-plus"></i></button>
                         </div>
-                        <Button variant="contained" sx={{mt: 4}}>Add to cart</Button>
+                        <Button variant="contained" sx={{mt: 4}} onClick={()=>handleClick()}>Add to cart</Button>
                     </Grid>
                 </Grid>
             </Container>

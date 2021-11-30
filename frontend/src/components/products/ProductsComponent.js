@@ -19,6 +19,7 @@ const ProductsComponent = ({ home = false, category}) => {
 
     return (
         <Container>
+            {category && <Typography variant="h3">{category}</Typography>}
             <Box className="product-filters" sx={{ display: 'flex', marginTop: home ? '3rem' : '', justifyContent: 'space-between'}}>
                 <div className="left-section">
                     <div style={{display: 'flex', alignItems: 'center', marginRight: '1rem'}}>
