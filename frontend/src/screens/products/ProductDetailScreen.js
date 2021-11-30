@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import {Box, FormControl, InputLabel, Select, MenuItem, Container, Typography, Button, Grid} from '@mui/material'
 import { getProductDetail } from '../../actions/productAction'
 import Spinner from '../../components/Spinner'
+import { CART_ADD_ITEM } from '../../actions/actionTypes/cartTypes';
 
 const ProductDetailScreen = () => {
     const [size, setSize ] = useState('')
@@ -41,7 +42,15 @@ const ProductDetailScreen = () => {
     }
 
     const handleClick = () => {
-        // update cart
+        dispatch({
+            type: CART_ADD_ITEM,
+            payload: {
+                ...product, 
+                quantity,
+                color,
+                size
+            }
+        })
     }
 
     return (
