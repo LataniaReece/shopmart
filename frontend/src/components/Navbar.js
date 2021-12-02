@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
 import { Box, Typography, Button, IconButton, Toolbar, AppBar, Drawer, List, ListItemButton, ListItem, ListItemText } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Navbar = () => {
     const [isOpenSideDrawer, setIsOpenSideDrawer] = useState(false)
@@ -33,6 +34,9 @@ const Navbar = () => {
                                 <Link to="/">ShopMart</Link>
                             </Typography>
                         <Button color="inherit">Login</Button>
+                        <Link to="/cart">
+                            <ShoppingCartIcon />
+                        </Link>
                     </Toolbar>
                 </AppBar>
             </Box>

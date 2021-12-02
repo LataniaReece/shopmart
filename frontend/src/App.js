@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import HomeScreen from './screens/HomeScreen';
 import ProductDetailScreen from './screens/products/ProductDetailScreen';
 import ProductsListScreen from './screens/products/ProductsListScreen';
+import CartScreen from './screens/CartScreen';
 
 import customTheme from './assets/theme';
 
@@ -23,7 +24,8 @@ const App = () => {
                         <Navbar />
                             <Routes>
                                 <Route path='/products/category/:category' element={<ProductsListScreen/>} />
-                                <Route path='/products/:id' element={<ProductDetailScreen/>} />
+                                <Route path='/products/:id' element={<ProductDetailScreen />} />
+                                <Route path='/cart' element={<CartScreen />} />
                                 <Route path='/' element={<HomeScreen/>} />
                             </Routes>
                         <Footer />

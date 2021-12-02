@@ -72,7 +72,8 @@ a{
   height: 95vh !important;
 }
 
-.product-detail-container .color{
+.product-detail-container .color,
+.cart-item .color{
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -110,4 +111,47 @@ a{
 .quantity-counter button:last-of-type{
   margin-right: -10px;
   margin-left: 20px;
+}
+
+/* ======================= Shopping Cart ======================================================= */
+.cart-item{
+  display: flex;
+  height: 145px ;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgb(211, 211, 211);
+  margin-top: 1.5rem;
+}
+
+.cart-item:last-child{
+  border: none;
+}
+
+.cart-item .info{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+}
+
+.cart-item .info div > *{
+  margin-bottom: 1rem;
+}
+
+.cart-item .info a{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cart-item .info a:hover{
+  color: blue;
+}
+
+.cart-item .info span{
+  font-weight: bold;
+}
+
+.cart-item img{
+  height: 100%;
 }
