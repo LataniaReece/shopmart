@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const stripe = require('stripe')(process.env.STRIPE_KEY)
+const { verifyUser } = require('../middleware/authMiddleware');
 
-router.post('/payment', (req, res) => {
+router.post('/payment', verifyUser, (req, res) => {
     stripe.charges.create(
         {
             source: req.body.tokenId,
@@ -10,6 +11,7 @@ router.post('/payment', (req, res) => {
        },
        (stripeErr, stripeRes) => {
            if(stripeErr){
+               console.log(stripeErr)
                res.status(500).json(stripeErr)
            } else{
                res.status(200).json(stripeRes)

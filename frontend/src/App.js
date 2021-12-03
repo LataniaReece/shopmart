@@ -14,6 +14,7 @@ import ProductsListScreen from './screens/products/ProductsListScreen';
 import CartScreen from './screens/CartScreen';
 
 import customTheme from './assets/theme';
+import OrderSuccess from './screens/OrderSuccess';
 
 const App = () => {
     return (
@@ -26,6 +27,8 @@ const App = () => {
                                 <Route path='/products/category/:category' element={<ProductsListScreen/>} />
                                 <Route path='/products/:id' element={<ProductDetailScreen />} />
                                 <Route path='/cart' element={<CartScreen />} />
+                                <Route path='/success' element={<OrderSuccess/>} />
+                                <Route path='/pay' element={<Pay/>} />
                                 <Route path='/' element={<HomeScreen/>} />
                             </Routes>
                         <Footer />

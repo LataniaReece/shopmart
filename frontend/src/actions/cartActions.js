@@ -1,4 +1,7 @@
-import { CART_ADD_ITEM, GET_CART_INFO } from "./actionTypes/cartTypes"
+import axios from 'axios'
+import { 
+    CART_ADD_ITEM, 
+    GET_CART_INFO} from "./actionTypes/cartTypes"
 
 
 export const addToCart = (cartItemData) => async (dispatch, getState) => {

@@ -1,7 +1,7 @@
 import React, {useState, useEffect}from 'react' 
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Card, CardMedia, CardContent, CardActions, Typography, Button} from '@mui/material'
+import { Grid, Card, CardMedia, CardContent, Typography, Alert} from '@mui/material'
 import { getProducts } from '../../actions/productAction'
 import Spinner from '../Spinner'
 
@@ -21,7 +21,7 @@ const ProductListComponent = ({category, filters, sort}) => {
             setCurrentCategory(category)
             dispatch(getProducts(category))
         }
-    }, [category, currentCategory])
+    }, [category, currentCategory, dispatch])
  
     useEffect(() => {
         if(products && !Object.values(filters).every(x => x === '') && filters !== currentFilters){
@@ -39,7 +39,6 @@ const ProductListComponent = ({category, filters, sort}) => {
     }, [products, filters, currentFilters])
 
     useEffect(() =>  {
-        console.log(sort)
         if(sort === 'newest'){
             setDisplayProducts((prev) => 
                 [...prev].sort((a, b) => a.createdAt - b.createdAt)
@@ -61,6 +60,7 @@ const ProductListComponent = ({category, filters, sort}) => {
         {loading && <Spinner /> } 
         {displayProducts && displayProducts.length > 0 ? (
             <Grid className="products-container" container spacing={{ xs: 2, md: 3 }} sx={{minHeight: '70vh'}}>
+                { error && <Alert severity="error">{error}</Alert>}
                 {displayProducts.map((product, index) => {
                     return  <Grid className="product-item" item sx={{ width:'100%' }} xs={12} sm={6} md={3} key={index}>
                         <Link to={`/products/${product._id}`}>

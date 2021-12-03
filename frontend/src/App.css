@@ -155,3 +155,15 @@ a{
 .cart-item img{
   height: 100%;
 }
+
+.order-success img{
+  margin-top: 3rem;
+  max-width: 100%;
+  height: 300px;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
+.order-success a{
+  display: block;
+  margin-top: 1rem;
+}

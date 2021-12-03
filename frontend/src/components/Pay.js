@@ -17,13 +17,15 @@ const Pay = ({history}) => {
     useEffect(() => {
         const makeRequest = async () => {
             try {
-                const res = await axios.post('http://localhost:5000/api/checkout/payment', {
-                    tokenId: stripeToken.id,
-                    amount: 2000,
+                const res = await axios.post('http://localhost:5000/api/checkout/payment', 
+                    {tokenId: stripeToken.id, amount: 2000}, 
+                    {headers: {
+                            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE1NTQzZjg4OWE4Nzc2MWVhODdlYiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzODQ5NDI5NSwiZXhwIjoxNjM4NzUzNDk1fQ.KbO-WPyUGOTa_ePyiDUSQ9MDTom6RLKSgaYx-eMEALk'
+                        }
                     }
                 );
                 console.log(res.data)
-                navigate("/success")
+                // navigate("/success")
             } catch (error) {
                 console.log(error)
             }

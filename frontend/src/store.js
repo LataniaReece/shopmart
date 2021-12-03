@@ -9,7 +9,7 @@ import { productDetailReducer, productListReduer } from './reducers/productReduc
 const reducer = combineReducers({
     productList: productListReduer,
     productDetail: productDetailReducer,
-    cart: cartReducer,
+    cart: cartReducer
 })
 
 let cartFromStorage

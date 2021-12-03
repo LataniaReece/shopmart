@@ -1,13 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate, Link} from 'react-router-dom';
-import { Box, Typography, Button, IconButton, Toolbar, AppBar, Drawer, List, ListItemButton, ListItem, ListItemText } from '@mui/material';
+import {useDispatch, useSelector } from 'react-redux';
+import { Box, Typography, Button, IconButton, Toolbar, AppBar, Drawer, List, ListItemButton, ListItem, ListItemText, Badge} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { getCartInfo } from '../actions/cartActions';
 
 const Navbar = () => {
     const [isOpenSideDrawer, setIsOpenSideDrawer] = useState(false)
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const cart = useSelector(state => state.cart)
+
+    useEffect(() => {
+        if(!cart){
+            dispatch(getCartInfo())
+        }
+    }, [cart, dispatch])
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -27,15 +38,18 @@ const Navbar = () => {
                             color="inherit"
                             aria-label="menu"
                             sx={{ mr: 2 }}
+                            onClick={toggleDrawer(true)} 
                         >
-                        <MenuIcon onClick={toggleDrawer(true)} />
+                            <MenuIcon />
                         </IconButton>
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                 <Link to="/">ShopMart</Link>
                             </Typography>
                         <Button color="inherit">Login</Button>
                         <Link to="/cart">
-                            <ShoppingCartIcon />
+                            <Badge badgeContent={cart.quantity} color="primary">
+                                <ShoppingCartIcon />
+                            </Badge>
                         </Link>
                     </Toolbar>
                 </AppBar>
