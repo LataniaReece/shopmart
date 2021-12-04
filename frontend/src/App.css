@@ -167,3 +167,46 @@ a{
   display: block;
   margin-top: 1rem;
 }
+
+.order-success .btns > a{
+  margin-right: 1rem;
+}
+
+
+/* ==================================== Order Details ======================================= */
+
+.order-details .info{
+  display: flex;
+}
+
+.order-details .info p{
+  margin-right: 1rem;
+  font-size: 0.8rem;
+}
+
+.order-details .info > div p:first-of-type{
+  text-transform: uppercase;
+}
+
+.order-details .order-number{
+  font-size: 0.8rem;
+}
+
+.order-details .order-number a{
+  display: block;
+  text-decoration: underline;
+  transition: all ease-in 0.2s;
+}
+
+.order-details .order-number a:hover{
+  color: blue;
+}
+
+.order-products a{
+  margin-right: 1rem;
+}
+
+.order-products img{
+  max-width: 100%;
+  height: 100px;
+}

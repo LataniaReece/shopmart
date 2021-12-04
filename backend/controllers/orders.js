@@ -28,7 +28,10 @@ module.exports.findUserOrder = async (req, res) => {
 // @route   POST /api/order
 // @access  Private/Admin
 module.exports.createOrder = async (req, res) => {
-    const newOrder = new Order(req.body);
+    const newOrder = new Order({
+        ...req.body,
+        user: req.user._id
+    });
 
     try {
        const savedOrder = await newOrder.save();

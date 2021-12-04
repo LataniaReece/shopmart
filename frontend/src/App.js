@@ -15,6 +15,8 @@ import CartScreen from './screens/CartScreen';
 
 import customTheme from './assets/theme';
 import OrderSuccess from './screens/OrderSuccess';
+import OrdersScreen from './screens/orders/OrdersScreen';
+import OrderDetailScreen from './screens/orders/OrderDetailScreen';
 
 const App = () => {
     return (
@@ -28,7 +30,8 @@ const App = () => {
                                 <Route path='/products/:id' element={<ProductDetailScreen />} />
                                 <Route path='/cart' element={<CartScreen />} />
                                 <Route path='/success' element={<OrderSuccess/>} />
-                                <Route path='/pay' element={<Pay/>} />
+                                <Route path='/orders/:id' element={<OrderDetailScreen/>} />
+                                <Route path='/orders' element={<OrdersScreen/>} />
                                 <Route path='/' element={<HomeScreen/>} />
                             </Routes>
                         <Footer />

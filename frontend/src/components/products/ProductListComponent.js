@@ -17,7 +17,7 @@ const ProductListComponent = ({category, filters, sort}) => {
     let { loading, error, products } = productList
 
     useEffect(() => { 
-        if(!products || products.length === 0 || currentCategory !== category){
+        if(currentCategory !== category){
             setCurrentCategory(category)
             dispatch(getProducts(category))
         }

@@ -13,7 +13,10 @@ const OrderSuccess = () => {
             <img 
             src="https://images.unsplash.com/photo-1502355984-b735cb2550ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80" 
             alt="thank you"/>
-            <Link to={'/'}><Button variant="contained" color="secondary">Continue Shopping</Button></Link>
+            <Box sx={{display:'flex', justifyContent: 'center'}} className="btns">            
+                <Link to={'/'}><Button variant="contained" color="secondary">Continue Shopping</Button></Link>
+                <Link to={'/orders'}><Button variant="outlined" color="secondary">See Orders</Button></Link>
+            </Box>
         </Box>            
     )
 }

@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Order = require('../models/order');
 const CryptoJs = require('crypto-js')
 const jwt = require('jsonwebtoken')
 
@@ -99,5 +100,17 @@ module.exports.getUserStats = async (req, res) =>{
         res.status(200).json(data)
     }catch(error){
         return res.status(404).json({ message: error.message})
+    }
+};
+
+// @desc    Get all user orders
+// @route   GET /api/users/orders
+// @access  Private
+module.exports.getAllUserOrders = async(req, res) =>{
+    try {
+        const orders = await Order.find({user: req.user._id})
+        return res.status(200).json(orders)
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
     }
 };

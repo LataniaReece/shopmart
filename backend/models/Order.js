@@ -1,20 +1,33 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
-    userId: {
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User',
+    },
+    stripePaymentId: {
         type: String,
         required: true
-    }, 
+    },
     products: [
         {
-            productId: {
-                type: String,
-                quantity: {
-                    type: Number, 
-                    default: 1
-                }
-            },
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            quantity: {
+                type: Number,
+                default: 1
+            }
         },
+        // {
+        //     productId: {
+        //         type: String,
+        //         quantity: {
+        //             type: Number, 
+        //             default: 1
+        //         }
+        //     },
+        // },
     ],
     amount: { type: Number, required: true},
     address: {
