@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react'
+import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { Typography, Box, Container, Alert} from '@mui/material'
+import { Typography, Box, Container, Alert, Button} from '@mui/material'
 import { getUserOrders } from '../../actions/orderActions'
 import Spinner from '../../components/Spinner'
 
@@ -16,9 +17,18 @@ const OrdersScreen = () => {
         dispatch(getUserOrders())
     }, [dispatch])
 
+    const displayDate = (date) =>{
+        const newDate = new Date(date)
+        return moment(newDate).format('MM/DD/YYYY')
+    }
+
     return (
         <Container>
-            <Typography variant="h3" sx={{my: 3}}>Your Orders</Typography>
+            <Box sx={{display:'flex', justifyContent: 'space-between'}}>
+                <Typography variant="h4" sx={{my: 3}}>Your Orders</Typography>
+                <Link to="/" style={{alignSelf:'center'}}><Button variant="contained" color="secondary">Continue Shopping</Button></Link>
+            </Box>
+           
             {loading && <Spinner />}
             {error && <Alert severity="error">{error}</Alert> }
             { orders && (
@@ -31,7 +41,7 @@ const OrdersScreen = () => {
                             <div className="info">
                                 <div>
                                     <Typography component="p" variant="p">Order Placed</Typography>
-                                    <Typography component="p" variant="p">{order.createdAt}</Typography>
+                                    <Typography component="p" variant="p">{displayDate(order.createdAt)}</Typography>
                                 </div>
                                 <div>
                                     <Typography component="p" variant="p">Total</Typography>
@@ -39,21 +49,23 @@ const OrdersScreen = () => {
                                 </div>
                                 <div>
                                     <Typography component="p" variant="p">Ship To</Typography>
-                                    <Typography component="p" variant="p">Tony Tony</Typography>
+                                    <Typography component="p" variant="p">{order.address.name && order.address.name.toUpperCase()}</Typography>
                                 </div>
                             </div>
                             <div className="order-number">
-                                <Typography variant="p">Order #: 123-3213912312931</Typography>
-                                <Link to={`orders/123`}>View Order Details</Link>
+                                <Typography variant="p">Order #: {order._id}</Typography>
+                                <Link to={`/orders/${order._id}`}>View Order Details</Link>
                             </div>
                         </Box>
-                    <Box className="order-products">
-                        <Link to={`/`}>
-                            <img 
-                                src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=415&q=80" 
-                                alt="image" 
-                            />   
-                        </Link>                      
+                    <Box className="order-products" sx={{mt: 3}}>
+                    {order.products && order.products.map(product => {
+                        return  <Link to={`/products/${product._id}`} key={product._id}>
+                        <img 
+                            src={product.image} 
+                            alt="image" 
+                        />   
+                    </Link>   
+                    })}                   
                     </Box>
                 </Box>
                 })

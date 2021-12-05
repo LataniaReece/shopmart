@@ -46,7 +46,8 @@ const ProductDetailScreen = () => {
             ...product, 
                 quantity,
                 color,
-                size
+                size,
+                productId: product._id + Date.now()
         }))
     }
 

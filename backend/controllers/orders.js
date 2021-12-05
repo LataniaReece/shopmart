@@ -26,7 +26,7 @@ module.exports.findUserOrder = async (req, res) => {
 
 // @desc    Create an Order 
 // @route   POST /api/order
-// @access  Private/Admin
+// @access  Private
 module.exports.createOrder = async (req, res) => {
     const newOrder = new Order({
         ...req.body,
@@ -42,6 +42,18 @@ module.exports.createOrder = async (req, res) => {
     }
 
 }
+
+// @desc    Find User Order By Id
+// @route   GET /api/orders/:id
+// @access  Private
+module.exports.getOrderById = async (req, res) =>{
+    try{
+        const order = await Order.findById(req.params.id).populate('products'); 
+        return res.status(200).json(order)
+    }catch(error){
+        return res.status(404).json({ message: error.message})
+    }
+};
 
 // @desc    Update Order
 // @route   PUT /api/orders/:id

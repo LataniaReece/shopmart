@@ -10,24 +10,15 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    paymentMethod: {
+        type: Object,
+        required: true
+    },
     products: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
-            quantity: {
-                type: Number,
-                default: 1
-            }
         },
-        // {
-        //     productId: {
-        //         type: String,
-        //         quantity: {
-        //             type: Number, 
-        //             default: 1
-        //         }
-        //     },
-        // },
     ],
     amount: { type: Number, required: true},
     address: {

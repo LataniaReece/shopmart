@@ -29,7 +29,7 @@ module.exports.register = async (req, res, next) =>{
 module.exports.login = async (req, res) =>{
     try {
         const user = await User.findOne({ username: req.body.username})
-        !user && res.status(401).json('Wrong credentials')
+        !user && res.status(401).json({ message: 'Username or password incorrect. Please try again!' })
 
         const hashedPassword = CryptoJs.AES.decrypt(
             user.password, 
@@ -38,7 +38,7 @@ module.exports.login = async (req, res) =>{
 
         const originalPassword = hashedPassword.toString(CryptoJs.enc.Utf8);
 
-        originalPassword !== req.body.password && res.status(401).json('Wrong Credentials!')
+        originalPassword !== req.body.password && res.status(401).json({ message: 'Username or password incorrect. Please try again!' })
 
         const accessToken = jwt.sign({
             id: user._id,

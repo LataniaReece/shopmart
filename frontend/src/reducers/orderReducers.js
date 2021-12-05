@@ -4,7 +4,11 @@ import {
     GET_USER_ORDERS_FAIL, 
     ORDER_CREATE_REQUEST,
     ORDER_CREATE_FAIL,
-    ORDER_CREATE_SUCCESS} from '../actions/actionTypes/orderTypes'
+    ORDER_CREATE_SUCCESS,
+    ORDER_DETAILS_REQUEST,
+    ORDER_DETAILS_SUCCESS,
+    ORDER_DETAILS_FAIL,
+    ORDER_CREATE_RESET} from '../actions/actionTypes/orderTypes'
  
  
 export const userOrderListReducer = (state = { orders: [] }, action) => {
@@ -38,8 +42,31 @@ export const orderCreateReducer = (state = {}, action) => {
                 loading: false,
                 error: action.payload
             }
+        case ORDER_CREATE_RESET:
+            return {}
         default:
             return state
     }
 }
 
+export const orderDetailsReducer = ( state = { loading: true, order: {} }, action) => {
+    switch (action.type) {
+        case ORDER_DETAILS_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case ORDER_DETAILS_SUCCESS:
+            return {
+                loading: false,
+                order: action.payload
+            }
+        case ORDER_DETAILS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        default:
+            return state
+    }
+}

@@ -17,6 +17,8 @@ import customTheme from './assets/theme';
 import OrderSuccess from './screens/OrderSuccess';
 import OrdersScreen from './screens/orders/OrdersScreen';
 import OrderDetailScreen from './screens/orders/OrderDetailScreen';
+import LoginScreen from './screens/users/LoginScreen';
+import RegisterScreen from './screens/users/RegisterScreen';
 
 const App = () => {
     return (
@@ -26,6 +28,8 @@ const App = () => {
                     <main style={{ height: "100%", width: "100%", minWidth: "100%" }}>
                         <Navbar />
                             <Routes>
+                                <Route path='/login' element={<LoginScreen/>} />
+                                <Route path='/register' element={<RegisterScreen/>} />
                                 <Route path='/products/category/:category' element={<ProductsListScreen/>} />
                                 <Route path='/products/:id' element={<ProductDetailScreen />} />
                                 <Route path='/cart' element={<CartScreen />} />

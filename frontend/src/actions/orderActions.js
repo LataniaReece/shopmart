@@ -5,7 +5,10 @@ import {
     GET_USER_ORDERS_FAIL,
     ORDER_CREATE_REQUEST,
     ORDER_CREATE_SUCCESS,
-    ORDER_CREATE_FAIL } from './actionTypes/orderTypes'
+    ORDER_CREATE_FAIL, 
+    ORDER_DETAILS_REQUEST,
+    ORDER_DETAILS_SUCCESS,
+    ORDER_DETAILS_FAIL} from './actionTypes/orderTypes'
 
 export const getUserOrders = () => async (dispatch) => {
     try {
@@ -76,4 +79,39 @@ export const createOrder = (orderInfo) => async (dispatch, getState) => {
                    : error.message
          })
     }
+}
+
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+     try {
+          dispatch({
+               type: ORDER_DETAILS_REQUEST
+          })
+
+          // const { userLogin: { userInfo } } = getState()
+
+          const config = {
+               headers: {
+                    // Authorization: `Bearer ${userInfo.token}`
+                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE1NTQzZjg4OWE4Nzc2MWVhODdlYiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzODY1MTYyNCwiZXhwIjoxNjM4OTEwODI0fQ.p1G2-zo1DluFrWSskbWaeGMjGmC8y9DY3UbPOm1BNyc`
+               },
+          }
+
+          const { data } = await axios.get(
+               `/api/orders/${id}`,
+               config
+          )
+
+          dispatch({
+               type: ORDER_DETAILS_SUCCESS,
+               payload: data
+          })
+
+     } catch (error) {
+          dispatch({
+               type: ORDER_DETAILS_FAIL,
+               payload: error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+          })
+     }
 }
