@@ -5,6 +5,7 @@ import { Box, Typography, Button, IconButton, Toolbar, AppBar, Drawer, List, Lis
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { getCartInfo } from '../actions/cartActions';
+import { logout } from '../actions/userActions';
 
 const Navbar = () => {
     const [isOpenSideDrawer, setIsOpenSideDrawer] = useState(false)
@@ -13,6 +14,9 @@ const Navbar = () => {
     const dispatch = useDispatch();
 
     const cart = useSelector(state => state.cart)
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     useEffect(() => {
         if(!cart){
@@ -26,6 +30,10 @@ const Navbar = () => {
         }    
         setIsOpenSideDrawer(open)
       };
+
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
 
     return (
         <>
@@ -42,11 +50,20 @@ const Navbar = () => {
                         >
                             <MenuIcon />
                         </IconButton>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                <Link to="/">ShopMart</Link>
-                            </Typography>
-                        <Link to={'/login'}><Button color="inherit">Login</Button></Link>
-                        <Link to={'/register'}><Button color="inherit">Register</Button></Link>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            <Link to="/">ShopMart</Link>
+                        </Typography>
+                        {(userInfo && userInfo._id) ? (
+                            <>
+                                <Link to={'/orders'}><Button color="inherit">My Orders</Button></Link>
+                                <Link to="#" onClick={() => logoutHandler()}><Button color="inherit">Logout</Button></Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to={'/login'}><Button color="inherit">Login</Button></Link>
+                                <Link to={'/register'}><Button color="inherit">Register</Button></Link>
+                            </>
+                        )}
                         <Link to="/cart">
                             <Badge badgeContent={cart.quantity} color="primary">
                                 <ShoppingCartIcon />

@@ -1,6 +1,9 @@
 import React, { useEffect, useState }from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Typography, FormControl, TextField, Button, Box, Alert } from '@mui/material'
+import { register } from '../../actions/userActions'
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState('');
@@ -9,6 +12,35 @@ const RegisterScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage ] = useState('')
 
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const userRegister = useSelector(state => state.userRegister)
+    const { error, success, userInfo } = userRegister
+
+    
+    useEffect(() =>{
+        // if(success){
+        //     dispatch({
+        //         type: SET_GLOBAL_ALERT,
+        //         payload: {
+        //             alert: 'Welcome back!',
+        //             alertType: 'success'
+        //         }
+        //     })
+        //     history.push(redirect)
+        // }
+        // if(userInfo){
+        //     return history.push(redirect)
+        // }
+        if(success){
+            navigate('/')
+        }
+        if(userInfo){
+            return navigate('/')
+        }
+    }, [success, navigate, dispatch, userInfo])
+
     const handleSubmit = (e) => {
         e.preventDefault()
         if(password !== confirmPassword){
@@ -16,6 +48,7 @@ const RegisterScreen = () => {
             return
         }else{
             setMessage('')
+            dispatch(register(username, email, password))
         }
         console.log(username, password)
     }
@@ -25,6 +58,7 @@ const RegisterScreen = () => {
             <form className="form-container" onSubmit={handleSubmit}>
             <Typography textAlign="center" variant="h4">Sign Up</Typography>
             {message && <Alert severity="error">{message}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
             <div>   
                 <FormControl sx={{mt:3, width: '100%'}}>
                     <TextField 
