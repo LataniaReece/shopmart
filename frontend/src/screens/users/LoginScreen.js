@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Typography, FormControl, Button, Box, TextField, Alert} from '@mui/material'
 import { login } from '../../actions/userActions'
 
@@ -8,13 +8,14 @@ const LoginScreen = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo, error, success } = userLogin
 
-    // const redirect = location.search ? location.search.split('=')[1] : '/'
+    const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() =>{
         // if(success){
@@ -31,10 +32,10 @@ const LoginScreen = () => {
         //     return history.push(redirect)
         // }
         if(success){
-            navigate('/')
+            navigate(redirect)
         }
         if(userInfo){
-            return navigate('/')
+            return navigate(redirect)
         }
     }, [success, navigate, dispatch, userInfo])
 

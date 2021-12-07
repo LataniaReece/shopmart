@@ -15,8 +15,11 @@ const RegisterScreen = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo } = userLogin
+
     const userRegister = useSelector(state => state.userRegister)
-    const { error, success, userInfo } = userRegister
+    const { error, success } = userRegister
 
     
     useEffect(() =>{

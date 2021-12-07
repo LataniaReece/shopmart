@@ -10,20 +10,20 @@ import {
     ORDER_DETAILS_SUCCESS,
     ORDER_DETAILS_FAIL} from './actionTypes/orderTypes'
 
-export const getUserOrders = () => async (dispatch) => {
+export const getUserOrders = () => async (dispatch, getState) => {
     try {
 
         dispatch({
             type: GET_USER_ORDERS_REQUEST
        })
 
-    //    const { userLogin: { userInfo } } = getState()
+       const { userLogin: { userInfo } } = getState()
+       console.log(userInfo)
 
        const config = {
             headers: {
                  'Content-Type': 'application/json',
-                //  Authorization: `Bearer ${userInfo.token}`
-                 Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE1NTQzZjg4OWE4Nzc2MWVhODdlYiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzODU2ODQ1NSwiZXhwIjoxNjM4ODI3NjU1fQ.87MTscTbX484uXINKRCgYW9Tp1wpbCJIXFy4am0HpIk`
+                 Authorization: `Bearer ${userInfo.token}`
             },
        }
 

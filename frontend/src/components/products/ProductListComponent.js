@@ -80,7 +80,7 @@ const ProductListComponent = ({category, filters, sort}) => {
                     </Grid>
                 })}
             </Grid>
-        ) : <Typography variant="p" sx={{display: 'block', minHeight: '70vh'}}>No Products Found...</Typography>
+        ) : <Alert severity="warning" sx={{display: 'block', minHeight: '70vh'}}>No Products Found...</Alert>
             }        
       
         </>

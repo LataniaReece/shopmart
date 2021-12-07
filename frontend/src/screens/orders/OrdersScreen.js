@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Typography, Box, Container, Alert, Button} from '@mui/material'
 import { getUserOrders } from '../../actions/orderActions'
@@ -8,13 +8,21 @@ import Spinner from '../../components/Spinner'
 
 const OrdersScreen = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     const userOrders = useSelector(state => state.userOrders)
     let { loading, error, orders } = userOrders
 
     useEffect(() => { 
-        dispatch(getUserOrders())
+        if(!userInfo){
+            navigate('/login?redirect=/orders')
+        } else{
+            dispatch(getUserOrders())
+        }
     }, [dispatch])
 
     const displayDate = (date) =>{
@@ -23,15 +31,14 @@ const OrdersScreen = () => {
     }
 
     return (
-        <Container>
+        <Container sx={{minHeight:'85vh'}}>
             <Box sx={{display:'flex', justifyContent: 'space-between'}}>
                 <Typography variant="h4" sx={{my: 3}}>Your Orders</Typography>
                 <Link to="/" style={{alignSelf:'center'}}><Button variant="contained" color="secondary">Continue Shopping</Button></Link>
             </Box>
-           
             {loading && <Spinner />}
             {error && <Alert severity="error">{error}</Alert> }
-            { orders && (
+            { (orders && orders.length !== 0) ? (
                 orders.map(order => {
                    return <Box 
                         sx={{border:'2px solid #DCDCDC', borderRadius: '10px', padding: '1.5rem', mb: 3, boxShadow: '0 3px 10px rgb(0 0 0 / 0.2)'}}
@@ -69,7 +76,7 @@ const OrdersScreen = () => {
                     </Box>
                 </Box>
                 })
-            )}
+            ) : <Alert severity="info">No Orders Found...</Alert>}
         </Container>
     )
 }

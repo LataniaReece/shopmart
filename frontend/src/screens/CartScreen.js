@@ -81,7 +81,7 @@ const CartScreen = () => {
     }
       
     return (
-        <Container sx={{mt: 3, minHeight: '70vh'}}>
+        <Container sx={{mt: 3, minHeight: '85vh'}}>
             {isPaymentProcessing ? <span>Processing. Please wait...</span> : (
                 cart && (
                     <>

@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const CryptoJs = require('crypto-js')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const generateToken = require('../utils/generateToken');
+
 
 // @desc    Register User
 // @route   POST /api/users/register
@@ -17,7 +19,11 @@ module.exports.register = async (req, res, next) =>{
     
     try{
         const savedUser = await newUser.save();
-        return res.status(201).json(savedUser);
+        const token = generateToken(savedUser._id)
+
+        const { password, ...others} = savedUser._doc
+
+        return res.status(201).json({...others, token});
     }catch(error){
         return res.status(500).json({ message: error.message})
     }
@@ -37,20 +43,13 @@ module.exports.login = async (req, res) =>{
         )
 
         const originalPassword = hashedPassword.toString(CryptoJs.enc.Utf8);
-
         originalPassword !== req.body.password && res.status(401).json({ message: 'Username or password incorrect. Please try again!' })
 
-        const accessToken = jwt.sign({
-            id: user._id,
-            isAdmin: user.isAdmin,
-        }, 
-        process.env.JWT_SECRET,
-        { expiresIn:'3d'}
-    )
+        const token = generateToken(user._id)
 
         const { password, ...others} = user._doc
 
-        return res.status(201).json({...others, accessToken})
+        return res.status(201).json({...others, token})
 
     } catch (error) {
         return res.status(500).json({ message: error.message})
