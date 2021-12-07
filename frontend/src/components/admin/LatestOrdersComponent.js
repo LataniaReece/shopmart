@@ -19,7 +19,7 @@ const rows = [
   createData('#123', 'Tania', 'Dec 3rd', 500, 'completed'),
 ];
 
-const OrderTable = () => {
+const LatestOrdersComponent = () => {
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label='simple table'>
@@ -53,4 +53,4 @@ const OrderTable = () => {
   );
 };
 
-export default OrderTable;
+export default LatestOrdersComponent;

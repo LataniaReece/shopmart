@@ -1,17 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Typography, Box, Paper, Avatar } from '@mui/material';
+import { Grid, Typography, Box, Paper, Alert } from '@mui/material';
 import Chart from '../../components/admin/Chart';
 import { getUserStats } from '../../actions/userActions';
 import AdminSidenav from '../../components/AdminSidenav';
-import OrderTable from '../../components/admin/OrderTable';
+import NewUsersComponent from '../../components/admin/NewUsersComponent';
+import LatestOrdersComponent from '../../components/admin/LatestOrdersComponent';
 
 const DashboardScreen = () => {
+  const [message, setMessage] = useState('');
   const [userData, setUserData] = useState([]);
-  const dispatch = useDispatch();
 
-  const userStats = useSelector((state) => state.userStats);
-  const { loading, error, stats } = userStats;
+  const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const MONTHS = useMemo(
     () => [
@@ -32,24 +37,45 @@ const DashboardScreen = () => {
   );
 
   useEffect(() => {
-    dispatch(getUserStats());
-  }, []);
+    !userInfo && navigate('/login?redirect=/admin');
+    userInfo && !userInfo.isAdmin && navigate('/');
 
-  useEffect(() => {
-    userData &&
-      userData.map((item) =>
-        setUserData((prev) => [
-          ...prev,
-          { name: MONTHS[item._id - 1], 'Active User': item.total },
-        ])
-      );
-  }, [userData]);
+    const getStats = async () => {
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+
+        const { data } = await axios.get(`/api/users/stats`, config);
+
+        data.map((item) =>
+          setUserData((prev) => [
+            ...prev,
+            { name: MONTHS[item._id - 1], 'Active User': item.total },
+          ])
+        );
+      } catch (err) {
+        if (err) {
+          setMessage(err);
+        }
+      }
+    };
+    getStats();
+  }, [MONTHS]);
 
   return (
     <Box sx={{ minHeight: '85vh' }}>
-      <Typography variant='h4' sx={{ my: 3, paddingLeft: '1rem' }}>
+      <Typography
+        variant='h4'
+        sx={{ my: 3, paddingLeft: '1rem' }}
+        align='center'
+      >
         ShopMart Admin
       </Typography>
+      {message && <Alert severity='error'>{message}</Alert>}
       <Grid container spacing={2}>
         <Grid
           item
@@ -102,20 +128,29 @@ const DashboardScreen = () => {
             </Paper>
           </Box>
           <Chart
-            data={userStats}
+            data={userData}
             title='User Analytics'
             grid
             dataKey='Active User'
           />
-          <Box>
-            <Paper elevation={3} sx={{ padding: '2rem' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
+              <Typography
+                variant='p'
+                sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}
+              >
+                Newly Joined Members
+              </Typography>
+              <NewUsersComponent />
+            </Paper>
+            <Paper elevation={3} sx={{ padding: '2rem', width: '60%' }}>
               <Typography
                 variant='p'
                 sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}
               >
                 Latest Orders
               </Typography>
-              <OrderTable />
+              <LatestOrdersComponent />
             </Paper>
           </Box>
         </Grid>
