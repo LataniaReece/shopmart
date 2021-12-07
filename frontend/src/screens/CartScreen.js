@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { Typography, Container, Box, Button, Grid, Card, CardMedia} from '@mui/material'
+import { Typography, Container, Box, Button, Grid, Card, CardMedia, Alert} from '@mui/material'
 import StripeCheckout from 'react-stripe-checkout'
 import { getCartInfo, removeFromCart } from '../actions/cartActions'
 import { createOrder } from '../actions/orderActions'
@@ -24,6 +24,9 @@ const CartScreen = () => {
 
     const orderCreate = useSelector(state => state.orderCreate)
     const {loading, success: orderCreateSuccess, error, order} = orderCreate
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     useEffect(() => {
         dispatch(getCartInfo())
@@ -51,7 +54,7 @@ const CartScreen = () => {
                 const res = await axios.post(`/api/checkout/payment`, 
                     {tokenId: stripeToken.id, amount: cartTotal}, 
                     {headers: {
-                            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE1NTQzZjg4OWE4Nzc2MWVhODdlYiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzODQ5NDI5NSwiZXhwIjoxNjM4NzUzNDk1fQ.KbO-WPyUGOTa_ePyiDUSQ9MDTom6RLKSgaYx-eMEALk'
+                            Authorization: `Bearer ${userInfo.token}`
                         }
                     }
                 );
@@ -73,7 +76,6 @@ const CartScreen = () => {
         stripeToken && makeRequest(cart.total)
     }, [stripeToken, cart])
 
-
     const handleItemRemoval = (item) => {
         if(window.confirm('Are you sure you want to delete this item?')){
             dispatch(removeFromCart(item))
@@ -86,6 +88,7 @@ const CartScreen = () => {
                 cart && (
                     <>
                     <Typography variant="h4" align="center" sx={{my: 3}}>Shopping Cart</Typography>
+                    {error && <Alert severity="error">{error}</Alert>}
                     <Box sx={{display: 'flex', justifyContent: 'space-between', mb: 4}}>
                         <Link to="/"><Button variant="outlined">Continue Shopping</Button></Link>
                         <Typography variant="p" sx={{textDecoration: 'underline', alignSelf: 'center'}}>Cart Items ({cart.quantity})</Typography>
@@ -99,7 +102,7 @@ const CartScreen = () => {
                         token={onToken}
                         stripeKey={KEY}
                         >
-                            <Button variant="outlined">Checkout</Button>
+                            <Button variant="outlined" disabled={!userInfo ? true: false}>Checkout</Button>
                         </StripeCheckout>                   
                     </Box>
                     <Grid container spacing={3}>
@@ -158,8 +161,9 @@ const CartScreen = () => {
                                 token={onToken}
                                 stripeKey={KEY}
                             >
-                                <Button variant="contained" color="secondary" sx={{display: 'inline-block', width: '100%'}}>Checkout Now</Button>
+                                <Button variant="contained" color="secondary" sx={{display: 'inline-block', width: '100%'}} disabled={!userInfo ? true: false}>Checkout Now</Button>
                             </StripeCheckout>
+                            {!userInfo && <Typography variant="p" component="p" sx={{color:'red', mt:2}} align="center">Please <Link to={'/login?redirect=/cart'} style={{textDecoration:'underline', color:'black'}}>Log In</Link> to checkout </Typography>}
                             </Box>
                         </Grid>
                     </Grid>

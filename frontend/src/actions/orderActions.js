@@ -50,13 +50,12 @@ export const createOrder = (orderInfo) => async (dispatch, getState) => {
               type: ORDER_CREATE_REQUEST
          })
 
-        //  const { userLogin: { userInfo } } = getState()
+         const { userLogin: { userInfo } } = getState()
 
          const config = {
             headers: {
                 'Content-Type': 'application/json',
-               //  Authorization: `Bearer ${userInfo.token}`
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE1NTQzZjg4OWE4Nzc2MWVhODdlYiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzODU2ODQ1NSwiZXhwIjoxNjM4ODI3NjU1fQ.87MTscTbX484uXINKRCgYW9Tp1wpbCJIXFy4am0HpIk`
+                Authorization: `Bearer ${userInfo.token}`
            },
          }
 
@@ -87,12 +86,11 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
                type: ORDER_DETAILS_REQUEST
           })
 
-          // const { userLogin: { userInfo } } = getState()
+          const { userLogin: { userInfo } } = getState()
 
           const config = {
                headers: {
-                    // Authorization: `Bearer ${userInfo.token}`
-                    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE1NTQzZjg4OWE4Nzc2MWVhODdlYiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzODY1MTYyNCwiZXhwIjoxNjM4OTEwODI0fQ.p1G2-zo1DluFrWSskbWaeGMjGmC8y9DY3UbPOm1BNyc`
+                    Authorization: `Bearer ${userInfo.token}`
                },
           }
 
