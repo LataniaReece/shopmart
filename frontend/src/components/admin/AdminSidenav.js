@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Typography,
   List,
@@ -66,12 +67,14 @@ const AdminSidenav = () => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <ShoppingBagIcon />
-              </ListItemIcon>
-              <ListItemText primary='Products' />
-            </ListItemButton>
+            <Link to={'/admin/products'} className='admin-nav-link'>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ShoppingBagIcon />
+                </ListItemIcon>
+                <ListItemText primary='Products' />
+              </ListItemButton>
+            </Link>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton>
