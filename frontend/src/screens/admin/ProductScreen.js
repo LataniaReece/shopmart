@@ -9,8 +9,23 @@ import AdminSidenav from '../../components/admin/AdminSidenav';
 import NewUsersComponent from '../../components/admin/NewUsersComponent';
 import LatestOrdersComponent from '../../components/admin/LatestOrdersComponent';
 import RevenueComponent from '../../components/admin/RevenueComponent';
+import { useParams } from 'react-router';
 
-const DashboardScreen = () => {
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from 'recharts';
+import { getProductDetail } from '../../actions/productAction';
+const data = [
+  { month: 'Jan', sale: 500 },
+  { month: 'Feb', sale: 500 },
+];
+
+const ProductScreen = () => {
   const [message, setMessage] = useState('');
   const [userData, setUserData] = useState([]);
 
@@ -18,6 +33,16 @@ const DashboardScreen = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const productDetail = useSelector((state) => state.productDetail);
+  let { loading, error, product } = productDetail;
+
+  useEffect(() => {
+    dispatch(getProductDetail(id));
+  }, [id]);
 
   const MONTHS = useMemo(
     () => [
@@ -36,8 +61,6 @@ const DashboardScreen = () => {
     ],
     []
   );
-
-  console.log(userData);
 
   useEffect(() => {
     !userInfo && navigate('/login?redirect=/admin');
@@ -90,20 +113,12 @@ const DashboardScreen = () => {
         </Grid>
         <Grid item xs={6} md={9}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <RevenueComponent />
-            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
-              <Typography variant='h5'>Revenue</Typography>
-              <Typography
-                component='p'
-                variant='p'
-                sx={{ fontSize: 30, my: 2 }}
-              >
-                $3218
-              </Typography>
-              <Typography component='p' variant='p' className='text-light'>
-                Compared to Last Month
-              </Typography>
-            </Paper>
+            <Chart
+              data={userData}
+              title='User Analytics'
+              grid
+              dataKey='Active User'
+            />
             <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
               <Typography variant='h5'>Revenue</Typography>
               <Typography
@@ -118,12 +133,7 @@ const DashboardScreen = () => {
               </Typography>
             </Paper>
           </Box>
-          <Chart
-            data={userData}
-            title='User Analytics'
-            grid
-            dataKey='Active User'
-          />
+
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
               <Typography
@@ -150,4 +160,4 @@ const DashboardScreen = () => {
   );
 };
 
-export default DashboardScreen;
+export default ProductScreen;

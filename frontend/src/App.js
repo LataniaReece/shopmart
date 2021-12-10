@@ -22,6 +22,7 @@ import RegisterScreen from './screens/users/RegisterScreen';
 import DashboardScreen from './screens/admin/DashboardScreen';
 import ProductsScreen from './screens/admin/ProductsScreen';
 import CreateProductScreen from './screens/admin/CreateProductScreen';
+import ProductScreen from './screens/admin/ProductScreen';
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
                 path='/admin/products/create'
                 element={<CreateProductScreen />}
               />
+              <Route path='/admin/products/:id' element={<ProductScreen />} />
               <Route path='/admin' element={<DashboardScreen />} />
               <Route path='/' element={<HomeScreen />} />
             </Routes>

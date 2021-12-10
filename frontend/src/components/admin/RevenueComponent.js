@@ -5,6 +5,24 @@ import { Paper, Typography, Box } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
+const indexOfMax = (arr) => {
+  if (arr.length === 0) {
+    return -1;
+  }
+
+  var max = arr[0];
+  var maxIndex = 0;
+
+  for (var i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+      maxIndex = i;
+      max = arr[i];
+    }
+  }
+
+  return maxIndex;
+};
+
 const RevenueComponent = () => {
   const [income, setIncome] = useState([]);
   const [perc, setPerc] = useState(0);
@@ -27,6 +45,7 @@ const RevenueComponent = () => {
 
         setIncome(data);
         setPerc((data[1].total * 100) / data[0].total - 100);
+        console.log(`highest index ${indexOfMax(Object.keys(data))}`);
       } catch (err) {
         err && setMessage(err);
       }

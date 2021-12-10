@@ -50,7 +50,7 @@ const ProductsScreen = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={'/product/' + params.row._id}>
+            <Link to={`/admin/products/${params.row._id}`}>
               <Button
                 variant='contained'
                 size='small'
