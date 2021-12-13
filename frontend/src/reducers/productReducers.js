@@ -12,7 +12,7 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
-} from '../actions/actionTypes/productTypes';
+} from "../actions/actionTypes/productTypes";
 
 export const productListReduer = (state = { products: [] }, action) => {
   switch (action.type) {

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
@@ -12,10 +12,11 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
-} from './actionTypes/productTypes';
+} from "./actionTypes/productTypes";
+import { userRequest } from "../requestMethods";
 
 export const getProducts =
-  (category = '') =>
+  (category = "") =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
@@ -90,17 +91,19 @@ export const createProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
 
-    const { data } = await axios.post(`/api/products`, product, config);
+    // const res = await userRequest.post(`/products`, product); dispatch(addProductSuccess(res.data));
+
+    const { data } = await userRequest.post(`/products`, product);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
