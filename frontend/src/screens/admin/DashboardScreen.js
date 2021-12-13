@@ -54,16 +54,17 @@ const DashboardScreen = () => {
 
         const { data } = await axios.get(`/api/users/stats`, config);
 
-        data.map((item) =>
+        const list = data.sort((a, b) => {
+          return a._id - b._id;
+        });
+        list.map((item) =>
           setUserData((prev) => [
             ...prev,
             { name: MONTHS[item._id - 1], 'Active User': item.total },
           ])
         );
       } catch (err) {
-        if (err) {
-          setMessage(err);
-        }
+        setMessage(err.message);
       }
     };
     getStats();

@@ -43,11 +43,13 @@ const RevenueComponent = () => {
 
         const { data } = await axios.get('/api/orders/stats', config);
 
-        setIncome(data);
-        setPerc((data[1].total * 100) / data[0].total - 100);
-        console.log(`highest index ${indexOfMax(Object.keys(data))}`);
+        const list = data.sort((a, b) => {
+          return a._id - b._id;
+        });
+        setIncome(list);
+        setPerc((list[1].total * 100) / list[0].total - 100);
       } catch (err) {
-        err && setMessage(err);
+        setMessage(err.message);
       }
     };
     getIncome();

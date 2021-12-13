@@ -24,8 +24,11 @@ const CreateProductScreen = () => {
   };
 
   return (
-    <Box>
-      <form className='form-container' onSubmit={handleSubmit}>
+    <Box sx={{ my: 5 }}>
+      <form
+        className='form-container create-product-form'
+        onSubmit={handleSubmit}
+      >
         <Typography textAlign='center' variant='h4'>
           Create New Product
         </Typography>
@@ -35,18 +38,65 @@ const CreateProductScreen = () => {
             <TextField
               name='title'
               type='text'
-              label='Product Title'
+              label='Title'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               variant='outlined'
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
+            <TextField placeholder='Product description' multiline rows={5} />
+          </FormControl>
+          <FormControl sx={{ mt: 3, width: '100%' }}>
             <TextField
-              placeholder='MultiLine with rows: 2 and rowsMax: 4'
-              multiline
-              rows={2}
-              rowsMax={4}
+              name='price'
+              type='number'
+              label='Price'
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              variant='outlined'
+              inputProps={{ inputMode: 'numeric', min: '0' }}
+            />
+          </FormControl>
+          <FormControl sx={{ mt: 3, width: '100%' }}>
+            <TextField
+              name='color'
+              type='text'
+              label='Color'
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              variant='outlined'
+              helperText='e.g blue, red, green'
+            />
+          </FormControl>
+          <FormControl sx={{ mt: 3, width: '100%' }}>
+            <TextField
+              name='categories'
+              type='text'
+              label='Categories'
+              value={categories}
+              onChange={(e) => setCategories(e.target.value)}
+              variant='outlined'
+              helperText='e.g shirt, jacket, shoes'
+            />
+          </FormControl>
+          <FormControl sx={{ mt: 3, width: '100%' }}>
+            <TextField
+              name='size'
+              type='text'
+              label='Sizes'
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              variant='outlined'
+              helperText='e.g small, medium, large'
+            />
+          </FormControl>
+          <FormControl sx={{ mt: 3, width: '100%' }}>
+            <TextField
+              name='image'
+              type='file'
+              onChange={(e) => setSize(e.target.value)}
+              variant='outlined'
             />
           </FormControl>
         </div>

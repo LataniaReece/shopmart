@@ -13,10 +13,10 @@ function createData(orderNumber, name, date, amount, status) {
 }
 
 const rows = [
-  createData('#123', 'Tania', 'Dec 3rd', 500, 'completed'),
-  createData('#123', 'Tania', 'Dec 3rd', 500, 'completed'),
-  createData('#123', 'Tania', 'Dec 3rd', 500, 'completed'),
-  createData('#123', 'Tania', 'Dec 3rd', 500, 'completed'),
+  createData('#1234', 'Tania', 'Dec 3rd', 500, 'completed'),
+  createData('#1235', 'Tania', 'Dec 3rd', 500, 'completed'),
+  createData('#1236', 'Tania', 'Dec 3rd', 500, 'completed'),
+  createData('#1237', 'Tania', 'Dec 3rd', 500, 'completed'),
 ];
 
 const LatestOrdersComponent = () => {

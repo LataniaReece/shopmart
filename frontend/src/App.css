@@ -301,6 +301,11 @@ a {
   color: black;
 }
 
+.create-product-form {
+  width: 80%;
+  margin: 0 auto;
+}
+
 /* ============================================== Footer ============================================== */
 .footer {
   margin-top: 0 !important;

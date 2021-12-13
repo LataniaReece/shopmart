@@ -30,9 +30,7 @@ const NewUsersComponent = ({ users }) => {
 
         setNewUsers(data);
       } catch (err) {
-        if (err) {
-          setMessage(err);
-        }
+        setMessage(err.message);
       }
     };
     getNewUserInfo();

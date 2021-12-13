@@ -2,13 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Typography, Box, Paper, Alert } from '@mui/material';
+import { Grid, Typography, Box, Paper, Alert, Avatar } from '@mui/material';
 import Chart from '../../components/admin/Chart';
 import { getUserStats } from '../../actions/userActions';
 import AdminSidenav from '../../components/admin/AdminSidenav';
-import NewUsersComponent from '../../components/admin/NewUsersComponent';
-import LatestOrdersComponent from '../../components/admin/LatestOrdersComponent';
-import RevenueComponent from '../../components/admin/RevenueComponent';
 import { useParams } from 'react-router';
 
 import {
@@ -27,7 +24,7 @@ const data = [
 
 const ProductScreen = () => {
   const [message, setMessage] = useState('');
-  const [userData, setUserData] = useState([]);
+  const [pStats, setPStats] = useState([]);
 
   const navigate = useNavigate();
 
@@ -35,14 +32,14 @@ const ProductScreen = () => {
   const { userInfo } = userLogin;
 
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id: productId } = useParams();
 
   const productDetail = useSelector((state) => state.productDetail);
   let { loading, error, product } = productDetail;
 
   useEffect(() => {
-    dispatch(getProductDetail(id));
-  }, [id]);
+    dispatch(getProductDetail(productId));
+  }, [productId]);
 
   const MONTHS = useMemo(
     () => [
@@ -75,22 +72,25 @@ const ProductScreen = () => {
           },
         };
 
-        const { data } = await axios.get(`/api/users/stats`, config);
-
-        data.map((item) =>
-          setUserData((prev) => [
+        const res = await axios.get(
+          '/api/orders/stats?pid=' + productId,
+          config
+        );
+        const list = res.data.sort((a, b) => {
+          return a._id - b._id;
+        });
+        list.map((item) =>
+          setPStats((prev) => [
             ...prev,
-            { name: MONTHS[item._id - 1], 'Active User': item.total },
+            { name: MONTHS[item._id - 1], Sales: item.total },
           ])
         );
       } catch (err) {
-        if (err) {
-          setMessage(err);
-        }
+        console.log(err);
       }
     };
     getStats();
-  }, [MONTHS]);
+  }, [MONTHS, productId]);
 
   return (
     <Box sx={{ minHeight: '85vh' }}>
@@ -99,7 +99,7 @@ const ProductScreen = () => {
         sx={{ my: 3, paddingLeft: '1rem' }}
         align='center'
       >
-        ShopMart Admin
+        {product && product.title}
       </Typography>
       {message && <Alert severity='error'>{message}</Alert>}
       <Grid container spacing={2}>
@@ -111,50 +111,82 @@ const ProductScreen = () => {
         >
           <AdminSidenav />
         </Grid>
-        <Grid item xs={6} md={9}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Chart
-              data={userData}
-              title='User Analytics'
-              grid
-              dataKey='Active User'
-            />
-            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
-              <Typography variant='h5'>Revenue</Typography>
-              <Typography
-                component='p'
-                variant='p'
-                sx={{ fontSize: 30, my: 2 }}
-              >
-                $3218
-              </Typography>
-              <Typography component='p' variant='p' className='text-light'>
-                Compared to Last Month
-              </Typography>
-            </Paper>
-          </Box>
-
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
-              <Typography
-                variant='p'
-                sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}
-              >
-                Newly Joined Members
-              </Typography>
-              <NewUsersComponent />
-            </Paper>
-            <Paper elevation={3} sx={{ padding: '2rem', width: '60%' }}>
-              <Typography
-                variant='p'
-                sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}
-              >
-                Latest Orders
-              </Typography>
-              <LatestOrdersComponent />
-            </Paper>
-          </Box>
-        </Grid>
+        {product && (
+          <Grid item xs={6} md={9}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Paper elevation={3} sx={{ padding: '2rem', width: '48%' }}>
+                <Chart
+                  data={pStats}
+                  dataKey='Sales'
+                  title='Sales Performance'
+                />
+              </Paper>
+              <Paper elevation={3} sx={{ padding: '2rem', width: '48%' }}>
+                <Box sx={{ display: 'flex', mb: 3 }}>
+                  <Avatar alt={product.title} src={product.image} />
+                  <Typography
+                    component='p'
+                    sx={{ ml: 2, alignSelf: 'center', fontWeight: 600 }}
+                  >
+                    {product.title}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '70%',
+                  }}
+                >
+                  <Typography component='p'>Id:</Typography>
+                  <Typography component='p'>{product._id}</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '70%',
+                  }}
+                >
+                  <Typography component='p'>Sales:</Typography>
+                  <Typography component='p'>{product.title}</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '70%',
+                  }}
+                >
+                  <Typography component='p'>Active:</Typography>
+                  <Typography component='p'>true</Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '70%',
+                  }}
+                >
+                  <Typography component='p'>In stock:</Typography>
+                  <Typography component='p'>
+                    {product.inStock ? 'true' : 'false'}
+                  </Typography>
+                </Box>
+              </Paper>
+            </Box>
+            <Box sx={{ mt: 3 }}>
+              <Paper elevation={3} sx={{ padding: '2rem', width: '100%' }}>
+                <Typography
+                  variant='p'
+                  sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}
+                >
+                  Newly Joined Members
+                </Typography>
+              </Paper>
+            </Box>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
