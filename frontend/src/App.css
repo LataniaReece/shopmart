@@ -306,6 +306,10 @@ a {
   margin: 0 auto;
 }
 
+.product-update-form {
+  width: 30%;
+}
+
 /* ============================================== Footer ============================================== */
 .footer {
   margin-top: 0 !important;
