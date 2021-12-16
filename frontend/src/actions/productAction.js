@@ -3,7 +3,7 @@ import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
-PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS,
   PRODUCT_DELETE_FAIL,
@@ -123,19 +123,19 @@ export const createProduct = (product) => async (dispatch, getState) => {
   }
 };
 
-export const updateProduct = (id, product) => async (dispatch) => { 
+export const updateProduct = (id, product) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
-try { dispatch({ type: PRODUCT_UPDATE_REQUEST }); 
-
-const { data } = await userRequest.put(`/products/${id}`, product); 
-dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data, }); } 
-catch (error) { 
-dispatch({ 
-type: PRODUCT_UPDATE_FAIL, 
-payload: 
-error.response && error.response.data.message 
-? error.response.data.message 
-: error.message, 
-}); 
-} 
+    const { data } = await userRequest.put(`/products/${id}`, product);
+    dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };

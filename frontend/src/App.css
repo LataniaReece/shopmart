@@ -27,7 +27,7 @@ a {
 
 .showcase-img {
   height: 400px;
-  background-image: url('https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80');
+  background-image: url("https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -246,7 +246,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 90vh;
-  background: url('https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+  background: url("https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
   background-size: cover;
   box-shadow: inset 0 0 0 2000px rgba(255, 255, 255, 0.6);
 }
@@ -308,6 +308,11 @@ a {
 
 .product-update-form {
   width: 30%;
+}
+
+.edit-image {
+  max-width: 100%;
+  width: 50%;
 }
 
 /* ============================================== Footer ============================================== */
