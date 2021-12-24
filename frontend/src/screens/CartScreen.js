@@ -18,10 +18,12 @@ import { createOrder } from '../actions/orderActions';
 import CloseIcon from '@mui/icons-material/Close';
 import Spinner from '../components/Spinner';
 import { ORDER_CREATE_RESET } from '../actions/actionTypes/orderTypes';
+import { userRequest } from '../requestMethods';
 
 const KEY = process.env.REACT_APP_STRIPE;
 
 const CartScreen = () => {
+  const [message, setMessage] = useState('');
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [stripeToken, setStripeToken] = useState(null);
 
@@ -58,18 +60,12 @@ const CartScreen = () => {
   useEffect(() => {
     const makeRequest = async (cartTotal) => {
       try {
-        const res = await axios.post(
-          `/api/checkout/payment`,
-          { tokenId: stripeToken.id, amount: cartTotal },
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`,
-            },
-          }
-        );
+        const res = await userRequest.post(`/checkout/payment`, {
+          tokenId: stripeToken.id,
+          amount: cartTotal,
+        });
         setIsPaymentProcessing(true);
         const successPaymentData = res.data;
-        console.log(successPaymentData);
         dispatch(
           createOrder({
             stripePaymentId: successPaymentData.id,
@@ -80,7 +76,7 @@ const CartScreen = () => {
           })
         );
       } catch (error) {
-        console.log(error);
+        setMessage(error);
       }
     };
     stripeToken && makeRequest(cart.total);
@@ -94,6 +90,7 @@ const CartScreen = () => {
 
   return (
     <Container sx={{ mt: 3, minHeight: '85vh' }}>
+      {message && <Alert variant='error'>{message}</Alert>}
       {isPaymentProcessing ? (
         <span>Processing. Please wait...</span>
       ) : (

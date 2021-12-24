@@ -51,6 +51,10 @@ const Navbar = () => {
     dispatch(logout());
   };
 
+  function titleCase(string) {
+    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+  }
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -69,19 +73,24 @@ const Navbar = () => {
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
               <Link to='/'>ShopMart</Link>
             </Typography>
+            {userInfo && userInfo._id && (
+              <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+                Welcome, {titleCase(userInfo.username)}
+              </Typography>
+            )}
             {userInfo && userInfo._id ? (
               <>
                 <Link to={'/orders'}>
                   <Button color='inherit'>My Orders</Button>
-                </Link>
-                <Link to='#' onClick={() => logoutHandler()}>
-                  <Button color='inherit'>Logout</Button>
                 </Link>
                 {userInfo.isAdmin && (
                   <Link to={'/admin'}>
                     <Button color='inherit'>Admin</Button>
                   </Link>
                 )}
+                <Link to='#' onClick={() => logoutHandler()}>
+                  <Button color='inherit'>Logout</Button>
+                </Link>
               </>
             ) : (
               <>

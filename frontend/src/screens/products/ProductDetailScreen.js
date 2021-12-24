@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-
 import {
   Box,
   FormControl,
@@ -12,13 +11,14 @@ import {
   Typography,
   Button,
   Grid,
+  Alert,
 } from '@mui/material';
 import { getProductDetail } from '../../actions/productAction';
 import Spinner from '../../components/Spinner';
-import { CART_ADD_ITEM } from '../../actions/actionTypes/cartTypes';
 import { addToCart } from '../../actions/cartActions';
 
 const ProductDetailScreen = () => {
+  const [message, setMessage] = useState('');
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -30,8 +30,17 @@ const ProductDetailScreen = () => {
   let { loading, error, product } = productDetail;
 
   useEffect(() => {
-    dispatch(getProductDetail(id));
-  }, [id]);
+    if (!product || !product._id) {
+      dispatch(getProductDetail(id));
+    } else if (product) {
+      if (product.color.length === 1) {
+        setColor(product.color[0]);
+      }
+      if (product.size.length === 1) {
+        setSize(product.size[0]);
+      }
+    }
+  }, [id, product]);
 
   const displaySize = (size) => {
     if (size === 'S') {
@@ -51,17 +60,22 @@ const ProductDetailScreen = () => {
     }
   };
 
-  const handleClick = () => {
-    dispatch(
-      addToCart({
-        ...product,
-        quantity,
-        color,
-        totalPrice: quantity * product.price,
-        size,
-        productId: product._id + Date.now(),
-      })
-    );
+  const handleAddToCart = () => {
+    if (!quantity || !color || !size) {
+      setMessage('Please select all fields');
+    } else {
+      setMessage('');
+      dispatch(
+        addToCart({
+          ...product,
+          quantity,
+          color,
+          totalPrice: quantity * product.price,
+          size,
+          productId: product._id + Date.now(),
+        })
+      );
+    }
   };
 
   return (
@@ -148,10 +162,11 @@ const ProductDetailScreen = () => {
                     variant='contained'
                     color='secondary'
                     sx={{ mt: 4, display: 'inline-block', width: '100%' }}
-                    onClick={() => handleClick()}
+                    onClick={() => handleAddToCart()}
                   >
                     Add to cart
                   </Button>
+                  {message && <Alert variant='warning'>{message}</Alert>}
                 </Grid>
               </Grid>
             </Container>

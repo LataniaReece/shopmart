@@ -1,7 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Typography, Box, Paper, Alert } from '@mui/material';
 import Chart from '../../components/admin/Chart';
 import { getUserStats } from '../../actions/userActions';
@@ -9,15 +6,11 @@ import AdminSidenav from '../../components/admin/AdminSidenav';
 import NewUsersComponent from '../../components/admin/NewUsersComponent';
 import LatestOrdersComponent from '../../components/admin/LatestOrdersComponent';
 import RevenueComponent from '../../components/admin/RevenueComponent';
+import { userRequest } from '../../requestMethods';
 
 const DashboardScreen = () => {
   const [message, setMessage] = useState('');
   const [userData, setUserData] = useState([]);
-
-  const navigate = useNavigate();
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
   const MONTHS = useMemo(
     () => [
@@ -37,22 +30,10 @@ const DashboardScreen = () => {
     []
   );
 
-  console.log(userData);
-
   useEffect(() => {
-    !userInfo && navigate('/login?redirect=/admin');
-    userInfo && !userInfo.isAdmin && navigate('/');
-
     const getStats = async () => {
       try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-
-        const { data } = await axios.get(`/api/users/stats`, config);
+        const { data } = await userRequest.get(`/users/stats`);
 
         const list = data.sort((a, b) => {
           return a._id - b._id;
@@ -79,7 +60,11 @@ const DashboardScreen = () => {
       >
         ShopMart Admin
       </Typography>
-      {message && <Alert severity='error'>{message}</Alert>}
+      {message && (
+        <Alert severity='error' sx={{ mb: 3 }}>
+          {message}
+        </Alert>
+      )}
       <Grid container spacing={2}>
         <Grid
           item

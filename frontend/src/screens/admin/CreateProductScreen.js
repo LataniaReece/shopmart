@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -8,80 +9,73 @@ import {
   Alert,
   Button,
 } from '@mui/material';
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
-import app from '../../firebase';
+import ProgressBar from '../../components/ProgressBar';
 import { createProduct } from '../../actions/productAction';
+import { PRODUCT_CREATE_RESET } from '../../actions/actionTypes/productTypes';
 
 const CreateProductScreen = () => {
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState(null);
+  const [url, setUrl] = useState(null);
   const [categories, setCategories] = useState('');
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
   const [price, setPrice] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleColor = (e) => {
-    setColor(e.target.value.split(','));
-  };
-  const handleSize = (e) => {
-    setSize(e.target.value.split(','));
-  };
-  const handleCategories = (e) => {
-    setCategories(e.target.value.split(','));
+  const productCreate = useSelector((state) => state.productCreate);
+  const { error: successError, success: createSuccess } = productCreate;
+
+  const types = ['image/png', 'image/jpeg'];
+
+  const handleFileChange = (e) => {
+    let selected = e.target.files[0];
+
+    if (selected && types.includes(selected.type)) {
+      setFile(selected);
+      setError('');
+    } else {
+      setFile(null);
+      setError('Please select an image file (png or jpg)');
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const fileName = new Date().getTime() + file.name;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
-
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-        }
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          dispatch(
-            createProduct({
-              title,
-              description,
-              image: downloadURL,
-              categories,
-              size,
-              color,
-              price,
-            })
-          );
-        });
-      }
-    );
+    if (title && description && url && categories && size && color && price) {
+      dispatch(
+        createProduct({
+          title,
+          description,
+          image: url,
+          categories: categories.map((item) => item.trim()),
+          size: size.map((item) => item.trim()),
+          color: color.map((item) => item.trim()),
+          price,
+        })
+      );
+    } else {
+      setMessage('Please enter all fields');
+    }
   };
+
+  useEffect(() => {
+    if (createSuccess) {
+      dispatch({
+        type: PRODUCT_CREATE_RESET,
+      });
+      navigate('/admin/products', {
+        state: {
+          successMessage: 'Product Created!',
+        },
+      });
+    }
+  }, [createSuccess]);
 
   return (
     <Box sx={{ my: 5 }}>
@@ -92,6 +86,7 @@ const CreateProductScreen = () => {
         <Typography textAlign='center' variant='h4'>
           Create New Product
         </Typography>
+        {successError && <Alert severity='error'>{successError}</Alert>}
         {message && <Alert severity='error'>{message}</Alert>}
         <div>
           <FormControl sx={{ mt: 3, width: '100%' }}>
@@ -102,6 +97,7 @@ const CreateProductScreen = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               variant='outlined'
+              required
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
@@ -114,6 +110,7 @@ const CreateProductScreen = () => {
               placeholder='Product description'
               multiline
               rows={5}
+              required
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
@@ -125,6 +122,7 @@ const CreateProductScreen = () => {
               onChange={(e) => setPrice(e.target.value)}
               variant='outlined'
               inputProps={{ inputMode: 'numeric', min: '0' }}
+              required
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
@@ -133,9 +131,10 @@ const CreateProductScreen = () => {
               type='text'
               label='Color'
               value={color}
-              onChange={handleColor}
+              onChange={(e) => setColor(e.target.value.split(','))}
               variant='outlined'
               helperText='e.g blue, red, green'
+              required
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
@@ -144,9 +143,10 @@ const CreateProductScreen = () => {
               type='text'
               label='Categories'
               value={categories}
-              onChange={handleCategories}
+              onChange={(e) => setCategories(e.target.value.split(','))}
               variant='outlined'
               helperText='e.g shirt, jacket, shoes'
+              required
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
@@ -155,21 +155,39 @@ const CreateProductScreen = () => {
               type='text'
               label='Sizes'
               value={size}
-              onChange={handleSize}
+              onChange={(e) => setSize(e.target.value.split(','))}
               variant='outlined'
-              helperText='e.g small, medium, large'
+              helperText='e.g S, M, L, XL, XXL'
+              required
             />
           </FormControl>
           <FormControl sx={{ mt: 3, width: '100%' }}>
             <TextField
               name='file'
               type='file'
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={handleFileChange}
               variant='outlined'
+              required
             />
           </FormControl>
+          <div className='file-output'>
+            {error && <Alert variant='warning'>{error}</Alert>}
+            {file && (
+              <ProgressBar
+                file={file}
+                setFile={setFile}
+                url={url}
+                setUrl={setUrl}
+              />
+            )}
+          </div>
         </div>
-        <Button variant='contained' sx={{ mt: 5, width: '100%' }} type='submit'>
+        <Button
+          variant='contained'
+          sx={{ mt: 5, width: '100%' }}
+          type='submit'
+          // disabled={progress ? true : false}
+        >
           Create
         </Button>
       </form>

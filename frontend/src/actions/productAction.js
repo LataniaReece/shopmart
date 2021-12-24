@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
@@ -15,16 +15,18 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
-} from "./actionTypes/productTypes";
-import { userRequest } from "../requestMethods";
+} from './actionTypes/productTypes';
+import { publicRequest, userRequest } from '../requestMethods';
 
 export const getProducts =
-  (category = "") =>
+  (category = '') =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
-      const { data } = await axios.get(`/api/products?category=${category}`);
+      const { data } = await publicRequest.get(
+        `/products?category=${category}`
+      );
 
       dispatch({
         type: PRODUCT_LIST_SUCCESS,
@@ -45,7 +47,7 @@ export const getProductDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAIL_REQUEST });
 
-    const { data } = await axios.get(`/api/products/${id}`);
+    const { data } = await publicRequest.get(`/products/${id}`);
 
     dispatch({
       type: PRODUCT_DETAIL_SUCCESS,
@@ -62,21 +64,11 @@ export const getProductDetail = (id) => async (dispatch) => {
   }
 };
 
-export const deleteProduct = (id) => async (dispatch, getState) => {
+export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DELETE_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    await axios.delete(`/api/products/${id}`, config);
+    await userRequest.delete(`/products/${id}`);
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
@@ -90,21 +82,9 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createProduct = (product) => async (dispatch, getState) => {
+export const createProduct = (product) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST });
-
-    // const {
-    //   userLogin: { userInfo },
-    // } = getState();
-
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
-
-    // const res = await userRequest.post(`/products`, product); dispatch(addProductSuccess(res.data));
 
     const { data } = await userRequest.post(`/products`, product);
 

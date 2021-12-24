@@ -1,47 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
 import { Paper, Typography, Box } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-
-const indexOfMax = (arr) => {
-  if (arr.length === 0) {
-    return -1;
-  }
-
-  var max = arr[0];
-  var maxIndex = 0;
-
-  for (var i = 1; i < arr.length; i++) {
-    if (arr[i] > max) {
-      maxIndex = i;
-      max = arr[i];
-    }
-  }
-
-  return maxIndex;
-};
+import { userRequest } from '../../requestMethods';
 
 const RevenueComponent = () => {
   const [income, setIncome] = useState([]);
   const [perc, setPerc] = useState(0);
   const [message, setMessage] = useState('');
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
   useEffect(() => {
     const getIncome = async () => {
       try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-
-        const { data } = await axios.get('/api/orders/stats', config);
+        const { data } = await userRequest.get('/orders/stats');
 
         const list = data.sort((a, b) => {
           return a._id - b._id;
@@ -54,8 +25,6 @@ const RevenueComponent = () => {
     };
     getIncome();
   }, []);
-
-  console.log(income);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { publicRequest, userRequest } from '../requestMethods';
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -18,17 +18,11 @@ export const register = (username, email, password) => async (dispatch) => {
       type: USER_REGISTER_REQUEST,
     });
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    const { data } = await axios.post(
-      '/api/auth/register',
-      { username, email, password },
-      config
-    );
+    const { data } = await publicRequest.post('/auth/register', {
+      username,
+      email,
+      password,
+    });
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
@@ -41,6 +35,7 @@ export const register = (username, email, password) => async (dispatch) => {
     });
 
     localStorage.setItem('userInfo', JSON.stringify(data));
+    window.location.reload();
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
@@ -58,17 +53,10 @@ export const login = (username, password) => async (dispatch) => {
       type: USER_LOGIN_REQUEST,
     });
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    const { data } = await axios.post(
-      '/api/auth/login',
-      { username, password },
-      config
-    );
+    const { data } = await publicRequest.post('/auth/login', {
+      username,
+      password,
+    });
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -76,6 +64,7 @@ export const login = (username, password) => async (dispatch) => {
     });
 
     localStorage.setItem('userInfo', JSON.stringify(data));
+    window.location.reload();
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -93,38 +82,4 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   // dispatch({ type: USER_DETAILS_RESET })
   // dispatch({ type: ORDER_LIST_MY_RESET })
-};
-
-export const getUserStats = () => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: USER_STATS_REQUEST,
-    });
-
-    const {
-      userLogin: { userInfo },
-    } = getState();
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
-    const { data } = await axios.get(`/api/users/stats`, config);
-
-    dispatch({
-      type: USER_STATS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: USER_STATS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
 };
