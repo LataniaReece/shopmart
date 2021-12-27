@@ -31,6 +31,19 @@ const Navbar = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const categories = [
+    'women',
+    'men',
+    'coat',
+    'jacket',
+    'shirt',
+    'tshirt',
+    'pants',
+    'skirt',
+    'hat',
+    'sweater',
+  ];
+
   useEffect(() => {
     if (!cart) {
       dispatch(getCartInfo());
@@ -122,20 +135,15 @@ const Navbar = () => {
         >
           <nav aria-label='secondary mailbox folders'>
             <List>
-              <ListItemButton
-                onClick={() => navigate('/products/category/women')}
-              >
-                <ListItem disablePadding>
-                  <ListItemText primary='Women' />
-                </ListItem>
-              </ListItemButton>
-              <ListItemButton
-                onClick={() => navigate('/products/category/men')}
-              >
-                <ListItem disablePadding>
-                  <ListItemText primary='Men' />
-                </ListItem>
-              </ListItemButton>
+              {categories.map((category) => (
+                <ListItemButton
+                  onClick={() => navigate(`/products/category/${category}`)}
+                >
+                  <ListItem disablePadding>
+                    <ListItemText primary={`${titleCase(category)}`} />
+                  </ListItem>
+                </ListItemButton>
+              ))}
             </List>
           </nav>
         </Box>

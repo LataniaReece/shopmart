@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 // @access  Private/Admin
 module.exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate('user');
     return res.status(200).json(orders);
   } catch (error) {
     return res.status(500).json({ message: error.message });

@@ -24,9 +24,13 @@ const ProductsComponent = ({ home = false, category }) => {
     });
   };
 
+  function titleCase(string) {
+    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+  }
+
   return (
     <Container sx={{ mb: 5, minHeight: '85vh' }}>
-      {category && <Typography variant='h3'>{category}</Typography>}
+      {category && <Typography variant='h3'>{titleCase(category)}</Typography>}
       <Box
         className='product-filters'
         sx={{

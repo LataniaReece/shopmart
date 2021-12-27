@@ -30,7 +30,7 @@ const ProductDetailScreen = () => {
   let { loading, error, product } = productDetail;
 
   useEffect(() => {
-    if (!product || !product._id) {
+    if (!product || !product._id || id !== product._id) {
       dispatch(getProductDetail(id));
     } else if (product) {
       if (product.color.length === 1) {
@@ -75,6 +75,7 @@ const ProductDetailScreen = () => {
           productId: product._id + Date.now(),
         })
       );
+      setMessage('Added to cart!');
     }
   };
 
@@ -166,7 +167,7 @@ const ProductDetailScreen = () => {
                   >
                     Add to cart
                   </Button>
-                  {message && <Alert variant='warning'>{message}</Alert>}
+                  {message && <Alert variant='info'>{message}</Alert>}
                 </Grid>
               </Grid>
             </Container>
