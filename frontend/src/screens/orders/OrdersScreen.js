@@ -22,7 +22,7 @@ const OrdersScreen = () => {
   };
 
   return (
-    <Container sx={{ minHeight: '85vh' }}>
+    <Container sx={{ minHeight: '85vh', pb: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant='h4' sx={{ my: 3 }}>
           Your Orders

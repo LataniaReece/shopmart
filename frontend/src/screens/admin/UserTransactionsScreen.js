@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Container, Typography, Alert, Button, Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Spinner from '../../components/Spinner';
 import { userRequest } from '../../requestMethods';
 import AlertClosable from '../../components/AlertClosable';
 
-const TransactionsScreen = () => {
+const UserTransactionsScreen = () => {
   const [orders, setOrders] = useState(null);
   const [message, setMessage] = useState('');
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
+  const { id } = useParams();
+
   useEffect(() => {
     setUpdateSuccess(false);
-    const getOrders = async () => {
+    const getUserOrders = async () => {
       try {
-        const { data } = await userRequest.get(`/orders`);
+        const { data } = await userRequest.get(`/orders/find/${id}`);
         setOrders(data);
       } catch (err) {
         setMessage(err.message);
       }
     };
-    getOrders();
+    getUserOrders();
   }, [updateSuccess]);
 
   const updateOrderStatus = async (orderId) => {
@@ -119,7 +122,7 @@ const TransactionsScreen = () => {
     <>
       <Container sx={{ minHeight: '85vh', mt: 4 }}>
         {' '}
-        <Typography variant='h4'>Transactions</Typography>
+        <Typography variant='h4'>User Transactions</Typography>
         <Button variant='outlined' color='primary' sx={{ mt: 1, mb: 2, mr: 2 }}>
           <Link to={'/admin'}>Admin Dashboard</Link>
         </Button>
@@ -128,7 +131,7 @@ const TransactionsScreen = () => {
         {successMessage && (
           <AlertClosable message={successMessage} variant='succesS' />
         )}
-        {orders && (
+        {orders && orders.length > 0 ? (
           <div
             style={{ height: '800', width: '100%', marginTop: '1rem' }}
             className='productList'
@@ -142,9 +145,11 @@ const TransactionsScreen = () => {
               checkboxSelection
             />
           </div>
+        ) : (
+          <Alert>No orders found for this user</Alert>
         )}
       </Container>{' '}
     </>
   );
 };
-export default TransactionsScreen;
+export default UserTransactionsScreen;

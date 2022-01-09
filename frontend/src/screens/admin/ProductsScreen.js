@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import { Container, Typography, Alert, Button } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { DataGrid } from '@mui/x-data-grid';
 import { deleteProduct, getProducts } from '../../actions/productAction';
 import Spinner from '../../components/Spinner';
@@ -86,6 +87,9 @@ const ProductsScreen = () => {
     <>
       <Container sx={{ minHeight: '90vh', mt: 4, mb: 5 }}>
         <Typography variant='h4'>Products</Typography>
+        <Button variant='outlined' color='primary' sx={{ mt: 1, mb: 2, mr: 2 }}>
+          <Link to={'/admin'}>Admin Dashboard</Link>
+        </Button>
         <Button variant='contained' color='secondary' sx={{ mt: 1, mb: 2 }}>
           <Link to={'/admin/products/create'}>Create Product</Link>
         </Button>

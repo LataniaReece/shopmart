@@ -10,9 +10,7 @@ import { Provider, useSelector } from 'react-redux';
 import store from './store';
 import './App.css';
 
-import Pay from './components/Pay';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import HomeScreen from './screens/HomeScreen';
 import ProductDetailScreen from './screens/products/ProductDetailScreen';
 import ProductsListScreen from './screens/products/ProductsListScreen';
@@ -30,6 +28,7 @@ import CreateProductScreen from './screens/admin/CreateProductScreen';
 import ProductScreen from './screens/admin/ProductScreen';
 import UsersScreen from './screens/admin/UsersScreen';
 import TransactionsScreen from './screens/admin/TransactionsScreen';
+import UserTransactionsScreen from './screens/admin/UserTransactionsScreen';
 
 const AppWrapper = () => {
   return (
@@ -64,7 +63,13 @@ const App = () => {
   return (
     <ThemeProvider theme={customTheme}>
       <Router>
-        <main style={{ height: '100%', width: '100%', minWidth: '100%' }}>
+        <main
+          style={{
+            height: '100%',
+            width: '100%',
+            minWidth: '350px',
+          }}
+        >
           <Navbar />
           <Routes>
             <Route path='/login' element={<LoginScreen />} />
@@ -75,7 +80,14 @@ const App = () => {
             />
             <Route path='/products/:id' element={<ProductDetailScreen />} />
             <Route path='/cart' element={<CartScreen />} />
-            <Route path='/success' element={<OrderSuccess />} />
+            <Route
+              path='/success'
+              element={
+                <ProtectedUserRoute redirectTo='/login'>
+                  <OrderSuccess />
+                </ProtectedUserRoute>
+              }
+            />
             <Route
               path='/orders/:id'
               element={
@@ -133,6 +145,14 @@ const App = () => {
               }
             />
             <Route
+              path='/admin/userorders/:id'
+              element={
+                <ProtectedAdminRoute redirectTo='/login?redirect=/admin/users'>
+                  <UserTransactionsScreen />
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route
               path='/admin'
               element={
                 <ProtectedAdminRoute redirectTo='/login?redirect=/admin'>
@@ -142,7 +162,6 @@ const App = () => {
             />
             <Route path='/' element={<HomeScreen />} />
           </Routes>
-          <Footer />
         </main>
       </Router>
     </ThemeProvider>

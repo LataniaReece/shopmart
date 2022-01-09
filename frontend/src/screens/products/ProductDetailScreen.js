@@ -167,7 +167,7 @@ const ProductDetailScreen = () => {
                   >
                     Add to cart
                   </Button>
-                  {message && <Alert variant='info'>{message}</Alert>}
+                  {message && <Alert severity='info'>{message}</Alert>}
                 </Grid>
               </Grid>
             </Container>

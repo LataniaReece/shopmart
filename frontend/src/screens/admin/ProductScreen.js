@@ -340,7 +340,7 @@ const ProductScreen = () => {
                           />
                         </FormControl>
                         <div className='file-output'>
-                          {error && <Alert variant='warning'>{error}</Alert>}
+                          {error && <Alert severity='warning'>{error}</Alert>}
                           {file && (
                             <ProgressBar
                               file={file}

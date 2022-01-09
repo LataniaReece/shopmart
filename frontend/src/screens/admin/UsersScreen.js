@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import { Container, Typography, Alert, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Spinner from '../../components/Spinner';
@@ -22,11 +22,42 @@ const UsersScreen = () => {
     getUsers();
   }, []);
 
+  function titleCase(string) {
+    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+  }
+
+  const displayDate = (date) => {
+    const newDate = new Date(date);
+    return moment(newDate).format('MM/DD/YYYY');
+  };
+
   const columns = [
     { field: '_id', headerName: 'ID', width: 250 },
-    { field: 'username', headerName: 'Username', width: 200 },
+    {
+      field: 'username',
+      headerName: 'Username',
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <>
+            <Typography>{titleCase(params.row.username)}</Typography>
+          </>
+        );
+      },
+    },
     { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'createdAt', headerName: 'Joined', width: 160 },
+    {
+      field: 'createdAt',
+      headerName: 'Joined',
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <Typography>{displayDate(params.row.createdAt)}</Typography>
+          </>
+        );
+      },
+    },
     {
       field: 'action',
       headerName: 'Action',
@@ -57,6 +88,9 @@ const UsersScreen = () => {
       <Container sx={{ minHeight: '85vh', mt: 4 }}>
         {' '}
         <Typography variant='h4'>Users</Typography>
+        <Button variant='outlined' color='primary' sx={{ mt: 1, mb: 2 }}>
+          <Link to={'/admin'}>Admin Dashboard</Link>
+        </Button>
         {!users && <Spinner />}
         {message && <Alert severity='error'>{message}</Alert>}
         {users && (

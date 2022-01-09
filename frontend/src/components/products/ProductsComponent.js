@@ -29,14 +29,12 @@ const ProductsComponent = ({ home = false, category }) => {
   }
 
   return (
-    <Container sx={{ mb: 5, minHeight: '85vh' }}>
-      {category && <Typography variant='h3'>{titleCase(category)}</Typography>}
+    <Container sx={{ paddingBottom: '2rem', minHeight: '85vh' }}>
+      {category && <Typography variant='h4'>{titleCase(category)}</Typography>}
       <Box
         className='product-filters'
         sx={{
-          display: 'flex',
           marginTop: home ? '3rem' : '',
-          justifyContent: 'space-between',
         }}
       >
         <div className='left-section'>
@@ -48,7 +46,7 @@ const ProductsComponent = ({ home = false, category }) => {
             }}
           >
             <Typography variant='h5' sx={{ fontSize: '1.5rem' }}>
-              Filter Products:
+              Filter:
             </Typography>
           </div>
           <Box sx={{ minWidth: 120, mr: 3 }}>
@@ -101,7 +99,7 @@ const ProductsComponent = ({ home = false, category }) => {
             }}
           >
             <Typography variant='h5' sx={{ fontSize: '1.5rem' }}>
-              Sort Products:
+              Sort:
             </Typography>
           </div>
           <Box sx={{ minWidth: 120 }}>

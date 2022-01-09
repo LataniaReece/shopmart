@@ -1,5 +1,5 @@
 const Order = require('../models/order');
-const mongoose = require('mongoose');
+const { DateTime } = require('luxon');
 
 // @desc    Get all orders
 // @route   GET /api/orders
@@ -18,7 +18,9 @@ module.exports.getAllOrders = async (req, res) => {
 // @access  Private
 module.exports.findUserOrder = async (req, res) => {
   try {
-    const order = await Order.findOne({ userId: req.params.userId });
+    const order = await Order.find({ user: req.params.userId }).populate(
+      'user'
+    );
     return res.status(200).json(order);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -29,7 +31,6 @@ module.exports.findUserOrder = async (req, res) => {
 // @route   POST /api/order
 // @access  Private
 module.exports.createOrder = async (req, res) => {
-  console.log(req.body);
   const newOrder = new Order({
     ...req.body,
     user: req.user._id,
@@ -93,52 +94,14 @@ module.exports.deleteOrder = async (req, res) => {
 // @desc    Get monthly income
 // @route   GET /api/orders/stats
 // @access  Private/Admin
-// module.exports.getMonthlyIncome = async (req, res) =>{
-//     const date = new Date();
-//     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
-//     const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
-
-//     try{
-//         const income = await Order.aggregate([
-//             { $match: { createdAt: { $gte: previousMonth }}},
-//             {
-//                 $project:{
-//                     month: {$month: "$createdAt"},
-//                     sales: "$amount"
-//                 },
-//             },
-//             {
-//                 $group: {
-//                     _id: "$month",
-//                     total: {$sum: "$sales"}
-//                 }
-//             },
-//         ]);
-//         res.status(200).json(income)
-//     }catch(error){
-//         return res.status(404).json({ message: error.message})
-//     }
-// };
-
-// @desc    Get monthly income
-// @route   GET /api/orders/stats
-// @access  Private/Admin
 module.exports.getMonthlyIncome = async (req, res) => {
-  const productId = req.query.pid;
-  const date = new Date();
-  const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
-  const twoMonthsAgo = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
+  const prevMonth = DateTime.local().minus({ months: 1 });
 
   try {
     const income = await Order.aggregate([
       {
         $match: {
-          createdAt: { $gte: twoMonthsAgo },
-          ...(productId && {
-            products: {
-              $elemMatch: { _id: mongoose.Types.ObjectId(productId) },
-            },
-          }),
+          createdAt: { $gte: prevMonth },
         },
       },
       {

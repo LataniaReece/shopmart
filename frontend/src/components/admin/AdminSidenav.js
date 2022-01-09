@@ -15,7 +15,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const AdminSidenav = () => {
   return (
-    <nav>
+    <nav style={{ height: '100%' }}>
       <div>
         <Typography variant='p' className='text-muted'>
           Quick Menu

@@ -25,19 +25,6 @@ const LoginScreen = () => {
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
   useEffect(() => {
-    // if(success){
-    //     dispatch({
-    //         type: SET_GLOBAL_ALERT,
-    //         payload: {
-    //             alert: 'Welcome back!',
-    //             alertType: 'success'
-    //         }
-    //     })
-    //     history.push(redirect)
-    // }
-    // if(userInfo){
-    //     return history.push(redirect)
-    // }
     if (success) {
       navigate(redirect);
     }

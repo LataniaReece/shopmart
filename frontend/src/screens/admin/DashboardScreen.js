@@ -41,7 +41,7 @@ const DashboardScreen = () => {
         list.map((item) =>
           setUserData((prev) => [
             ...prev,
-            { name: MONTHS[item._id - 1], 'Active User': item.total },
+            { name: MONTHS[item._id - 1], 'Active User': item.total / 100 },
           ])
         );
       } catch (err) {
@@ -52,7 +52,7 @@ const DashboardScreen = () => {
   }, [MONTHS]);
 
   return (
-    <Box sx={{ minHeight: '85vh' }}>
+    <Box sx={{ minHeight: '85vh', pb: 5 }} className='admin-dashboard-page'>
       <Typography
         variant='h4'
         sx={{ my: 3, paddingLeft: '1rem' }}
@@ -65,53 +65,32 @@ const DashboardScreen = () => {
           {message}
         </Alert>
       )}
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className='dashboard-container'>
         <Grid
           item
-          xs={6}
-          md={2}
+          xs={12}
+          md={3}
           sx={{ marginLeft: '0.5rem', backgroundColor: '#F2F2F5' }}
         >
           <AdminSidenav />
         </Grid>
-        <Grid item xs={6} md={9}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <RevenueComponent />
-            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
-              <Typography variant='h5'>Revenue</Typography>
-              <Typography
-                component='p'
-                variant='p'
-                sx={{ fontSize: 30, my: 2 }}
-              >
-                $3218
-              </Typography>
-              <Typography component='p' variant='p' className='text-light'>
-                Compared to Last Month
-              </Typography>
-            </Paper>
-            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
-              <Typography variant='h5'>Revenue</Typography>
-              <Typography
-                component='p'
-                variant='p'
-                sx={{ fontSize: 30, my: 2 }}
-              >
-                $3218
-              </Typography>
-              <Typography component='p' variant='p' className='text-light'>
-                Compared to Last Month
-              </Typography>
-            </Paper>
-          </Box>
+        <Grid item xs={12} md={8}>
+          <RevenueComponent />
           <Chart
             data={userData}
             title='User Analytics'
             grid
             dataKey='Active User'
           />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Paper elevation={3} sx={{ padding: '2rem', width: '30%' }}>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'space-between' }}
+            className='dashboard-container-bottom'
+          >
+            <Paper
+              elevation={3}
+              sx={{ padding: '2rem' }}
+              className='new-members'
+            >
               <Typography
                 variant='p'
                 sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}
@@ -120,7 +99,11 @@ const DashboardScreen = () => {
               </Typography>
               <NewUsersComponent />
             </Paper>
-            <Paper elevation={3} sx={{ padding: '2rem', width: '60%' }}>
+            <Paper
+              elevation={3}
+              sx={{ padding: '2rem' }}
+              className='latest-orders'
+            >
               <Typography
                 variant='p'
                 sx={{ fontWeight: 600, fontSize: 20, mb: 3 }}

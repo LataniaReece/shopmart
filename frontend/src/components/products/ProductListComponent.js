@@ -83,7 +83,8 @@ const ProductListComponent = ({ category, filters, sort }) => {
                 sx={{ width: '100%' }}
                 xs={12}
                 sm={6}
-                md={3}
+                md={4}
+                lg={3}
                 key={index}
               >
                 <Link to={`/products/${product._id}`}>

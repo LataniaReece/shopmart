@@ -87,7 +87,12 @@ const Navbar = () => {
               <Link to='/'>ShopMart</Link>
             </Typography>
             {userInfo && userInfo._id && (
-              <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+              <Typography
+                variant='h6'
+                component='div'
+                sx={{ flexGrow: 1 }}
+                className='welcome'
+              >
                 Welcome, {titleCase(userInfo.username)}
               </Typography>
             )}
@@ -135,9 +140,10 @@ const Navbar = () => {
         >
           <nav aria-label='secondary mailbox folders'>
             <List>
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <ListItemButton
                   onClick={() => navigate(`/products/category/${category}`)}
+                  key={index}
                 >
                   <ListItem disablePadding>
                     <ListItemText primary={`${titleCase(category)}`} />

@@ -30,14 +30,9 @@ const OrderDetailScreen = () => {
         order && (
           <>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant='h4' sx={{ mt: 2, mb: 1 }}>
+              <Typography variant='h5' sx={{ mt: 2, mb: 1 }}>
                 Order Details: (Order# {order._id})
               </Typography>
-              <Link to='/' style={{ alignSelf: 'center' }}>
-                <Button variant='contained' color='secondary'>
-                  Continue Shopping
-                </Button>
-              </Link>
             </Box>
             <Typography component='p' variant='p'></Typography>
             <Typography component='p' variant='p' sx={{ mb: 2 }}>
@@ -49,6 +44,7 @@ const OrderDetailScreen = () => {
                 borderRadius: '10px',
                 padding: '1.5rem',
                 mb: 3,
+                minWidth: 320,
               }}
               key={order._id}
             >
@@ -111,7 +107,7 @@ const OrderDetailScreen = () => {
                     }}
                   >
                     <Typography variant='p'>Item(s) Subtotal</Typography>
-                    <Typography variant='p'>${order.amount}</Typography>
+                    <Typography variant='p'>${order.amount / 100}</Typography>
                   </div>
                   <div
                     className='order-summary-detail'
@@ -123,7 +119,7 @@ const OrderDetailScreen = () => {
                     }}
                   >
                     <Typography variant='p'>Shipping & Handling</Typography>
-                    <Typography variant='p'>$50</Typography>
+                    <Typography variant='p'>$5.00</Typography>
                   </div>
                   <div
                     className='order-summary-detail'
@@ -135,7 +131,7 @@ const OrderDetailScreen = () => {
                     }}
                   >
                     <Typography variant='p'>Tax</Typography>
-                    <Typography variant='p'>$50</Typography>
+                    <Typography variant='p'>$4.99</Typography>
                   </div>
                   <div
                     className='order-summary-detail'
@@ -147,7 +143,9 @@ const OrderDetailScreen = () => {
                     }}
                   >
                     <Typography variant='p'>Grand Total</Typography>
-                    <Typography variant='p'>${order.amount}</Typography>
+                    <Typography variant='p'>
+                      ${order.amount / 100 + 5.0 + 4.99}
+                    </Typography>
                   </div>
                 </Box>
               </Box>

@@ -25,6 +25,14 @@ a {
   font-weight: 600;
 }
 
+/* ================================ Navbar ===================================== */
+
+@media screen and (max-width: 810px) {
+  .welcome {
+    display: none;
+  }
+}
+
 .showcase-img {
   height: 400px;
   background-image: url('https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80');
@@ -58,6 +66,11 @@ a {
 
 /*  =================================== Products ===================================================== */
 
+.product-filters {
+  display: flex;
+  justify-content: space-between;
+}
+
 .product-filters .left-section,
 .product-filters .right-section {
   display: flex;
@@ -80,6 +93,7 @@ a {
 
 .product-detail-container {
   height: 95vh !important;
+  padding-bottom: 2rem !important;
 }
 
 .product-detail-container .color,
@@ -121,6 +135,16 @@ a {
 .quantity-counter button:last-of-type {
   margin-right: -10px;
   margin-left: 20px;
+}
+
+@media screen and (max-width: 810px) {
+  .product-filters {
+    flex-direction: column;
+  }
+
+  .product-filters .left-section {
+    margin-bottom: 1rem;
+  }
 }
 
 /* ======================= Shopping Cart ======================================================= */
@@ -176,6 +200,24 @@ a {
   background-color: transparent !important;
 }
 
+@media screen and (max-width: 535px) {
+  .cart-item {
+    flex-direction: column !important;
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 445px) {
+  .cart-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cart-header > *,
+  .cart-header > span {
+    margin-bottom: 1rem;
+  }
+}
 /*======================= Order Success ==================================== */
 
 .order-success img {
@@ -232,6 +274,18 @@ a {
   height: 100px;
 }
 
+@media screen and (max-width: 690px) {
+  .order-details {
+    flex-direction: column;
+    min-width: 200px;
+  }
+
+  .order-details > * {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
 /* ============================================== Forms =============================== */
 .form-container {
   margin-top: 1rem;
@@ -245,7 +299,8 @@ a {
   display: flex !important;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  min-height: 800px;
+  height: 800px;
   background: url('https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
   background-size: cover;
   box-shadow: inset 0 0 0 2000px rgba(255, 255, 255, 0.6);
@@ -263,13 +318,27 @@ a {
 }
 
 .chart {
-  margin: 1rem 0;
+  width: 100%;
+  margin-left: 1rem;
 }
 
 /* ============================= admin ============================== */
 
 .admin-nav-link {
   width: 100%;
+}
+
+.revenue {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.new-members {
+  width: 30%;
+}
+
+.latest-orders {
+  width: 60%;
 }
 
 /* Admin - Products */
@@ -319,6 +388,32 @@ a {
   height: 10px;
   background: green;
   margin-top: 20px;
+}
+
+@media screen and (max-width: 900px) {
+  .revenue {
+    width: 100%;
+  }
+
+  .admin-dashboard-page {
+    padding: 0 1.8rem;
+  }
+}
+
+@media screen and (max-width: 1220px) {
+  .dashboard-container-bottom {
+    flex-direction: column;
+  }
+
+  .new-members,
+  .latest-orders {
+    width: 100%;
+  }
+
+  .new-members,
+  .revenue {
+    margin-bottom: 1.5rem;
+  }
 }
 
 /* ============================================== Footer ============================================== */

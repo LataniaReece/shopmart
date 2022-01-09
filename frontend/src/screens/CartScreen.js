@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -13,10 +12,9 @@ import {
   Alert,
 } from '@mui/material';
 import StripeCheckout from 'react-stripe-checkout';
-import { getCartInfo, removeFromCart } from '../actions/cartActions';
+import { getCartInfo, removeFromCart, resetCart } from '../actions/cartActions';
 import { createOrder } from '../actions/orderActions';
 import CloseIcon from '@mui/icons-material/Close';
-import Spinner from '../components/Spinner';
 import { ORDER_CREATE_RESET } from '../actions/actionTypes/orderTypes';
 import { userRequest } from '../requestMethods';
 
@@ -45,6 +43,7 @@ const CartScreen = () => {
   useEffect(() => {
     dispatch({ type: ORDER_CREATE_RESET });
     if (orderCreateSuccess) {
+      dispatch(resetCart());
       navigate('/success', {
         state: {
           paymentInfo: order,
@@ -76,10 +75,10 @@ const CartScreen = () => {
           })
         );
       } catch (error) {
-        setMessage(error);
+        setMessage(error.message);
       }
     };
-    stripeToken && makeRequest(cart.total);
+    stripeToken && makeRequest(cart.total * 100 + 4.99 + 5.0);
   }, [stripeToken, cart]);
 
   const handleItemRemoval = (item) => {
@@ -90,7 +89,7 @@ const CartScreen = () => {
 
   return (
     <Container sx={{ mt: 3, minHeight: '85vh' }}>
-      {message && <Alert variant='error'>{message}</Alert>}
+      {message && <Alert severity='error'>{message}</Alert>}
       {isPaymentProcessing ? (
         <span>Processing. Please wait...</span>
       ) : (
@@ -102,6 +101,7 @@ const CartScreen = () => {
             {error && <Alert severity='error'>{error}</Alert>}
             <Box
               sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}
+              className='cart-header'
             >
               <Link to='/'>
                 <Button variant='outlined'>Continue Shopping</Button>
@@ -110,7 +110,8 @@ const CartScreen = () => {
                 variant='p'
                 sx={{ textDecoration: 'underline', alignSelf: 'center' }}
               >
-                Cart Items ({cart.quantity})
+                Cart Items (
+                {!cart.quantity || cart.quantity === 0 ? '0' : cart.quantity})
               </Typography>
               <StripeCheckout
                 name='ShopMart'
@@ -122,68 +123,80 @@ const CartScreen = () => {
                 token={onToken}
                 stripeKey={KEY}
               >
-                <Button variant='outlined' disabled={!userInfo ? true : false}>
+                <Button
+                  variant='outlined'
+                  disabled={
+                    !userInfo ||
+                    !(cart && cart.cartItems && cart.cartItems.length > 0)
+                      ? true
+                      : false
+                  }
+                >
                   Checkout
                 </Button>
               </StripeCheckout>
             </Box>
             <Grid container spacing={3}>
               <Grid item xs={12} md={9}>
-                {cart.cartItems.map((item, index) => {
-                  return (
-                    <Card className='cart-item' key={`${item._id}_${index}`}>
-                      <Button
-                        className='delete-cart-item'
-                        onClick={() => handleItemRemoval(item)}
-                      >
-                        <CloseIcon sx={{ mr: 3 }} />
-                      </Button>
-                      <Link to={`/products/${item._id}`}>
-                        <CardMedia
-                          component='img'
-                          sx={{ width: 151 }}
-                          image={item.image}
-                          alt={item.title}
-                        />
-                      </Link>
-                      <div className='info'>
-                        <div>
-                          <Typography component='p' variant='p'>
-                            <span>Name: </span>
-                            <Link to={`/products/${item._id}`}>
-                              {item.title.toUpperCase()}
-                            </Link>
-                          </Typography>
-                          <Typography component='p' variant='p'>
-                            <span>Size: </span>
-                            {item.size.toUpperCase()}
-                          </Typography>
-                          <button
-                            className='color'
-                            style={{ backgroundColor: item.color }}
-                          ></button>
+                {cart && cart.cartItems && cart.cartItems.length > 0 ? (
+                  cart.cartItems.map((item, index) => {
+                    return (
+                      <Card className='cart-item' key={`${item._id}_${index}`}>
+                        <Button
+                          className='delete-cart-item'
+                          onClick={() => handleItemRemoval(item)}
+                        >
+                          <CloseIcon sx={{ mr: 3 }} />
+                        </Button>
+                        <Link to={`/products/${item._id}`}>
+                          <CardMedia
+                            component='img'
+                            sx={{ width: 151 }}
+                            image={item.image}
+                            alt={item.title}
+                          />
+                        </Link>
+                        <div className='info'>
+                          <div>
+                            <Typography component='p' variant='p'>
+                              <span>Name: </span>
+                              <Link to={`/products/${item._id}`}>
+                                {item.title.toUpperCase()}
+                              </Link>
+                            </Typography>
+                            <Typography component='p' variant='p'>
+                              <span>Size: </span>
+                              {item.size.toUpperCase()}
+                            </Typography>
+                            <button
+                              className='color'
+                              style={{ backgroundColor: item.color }}
+                            ></button>
+                          </div>
+                          <div>
+                            <Typography
+                              component='p'
+                              variant='p'
+                              sx={{ fontSize: 18 }}
+                            >
+                              <span>Qty: </span>
+                              {item.quantity}
+                            </Typography>
+                            <Typography
+                              component='p'
+                              variant='p'
+                              sx={{ fontSize: 18 }}
+                            >
+                              ${item.price * item.quantity}
+                            </Typography>
+                          </div>
                         </div>
-                        <div>
-                          <Typography
-                            component='p'
-                            variant='p'
-                            sx={{ fontSize: 18 }}
-                          >
-                            <span>Qty: </span>
-                            {item.quantity}
-                          </Typography>
-                          <Typography
-                            component='p'
-                            variant='p'
-                            sx={{ fontSize: 18 }}
-                          >
-                            ${item.price * item.quantity}
-                          </Typography>
-                        </div>
-                      </div>
-                    </Card>
-                  );
-                })}
+                      </Card>
+                    );
+                  })
+                ) : (
+                  <Alert severity='info'>No items in cart</Alert>
+                )}
               </Grid>
               <Grid item xs={12} md={3}>
                 <Box
@@ -196,54 +209,62 @@ const CartScreen = () => {
                   <Typography variant='h5' align='center' sx={{ mb: 4 }}>
                     Order Summary
                   </Typography>
-                  <div
-                    className='order-summary-detail'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <Typography variant='p'>Item(s) Subtotal</Typography>
-                    <Typography variant='p'>${cart.total}</Typography>
-                  </div>
-                  <div
-                    className='order-summary-detail'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <Typography variant='p'>Shipping & Handling</Typography>
-                    <Typography variant='p'>$50</Typography>
-                  </div>
-                  <div
-                    className='order-summary-detail'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <Typography variant='p'>Tax</Typography>
-                    <Typography variant='p'>$50</Typography>
-                  </div>
-                  <div
-                    className='order-summary-detail'
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '100%',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <Typography variant='p'>Grand Total</Typography>
-                    <Typography variant='p'>${cart.total}</Typography>
-                  </div>
+                  {cart && cart.cartItems && cart.cartItems.length > 0 ? (
+                    <>
+                      <div
+                        className='order-summary-detail'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        <Typography variant='p'>Item(s) Subtotal</Typography>
+                        <Typography variant='p'>${cart.total}</Typography>
+                      </div>
+                      <div
+                        className='order-summary-detail'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        <Typography variant='p'>Shipping & Handling</Typography>
+                        <Typography variant='p'>$5.00</Typography>
+                      </div>
+                      <div
+                        className='order-summary-detail'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        <Typography variant='p'>Tax</Typography>
+                        <Typography variant='p'>$4.99</Typography>
+                      </div>
+                      <div
+                        className='order-summary-detail'
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        <Typography variant='p'>Grand Total</Typography>
+                        <Typography variant='p'>
+                          ${cart.total + 4.99 + 5.0}
+                        </Typography>
+                      </div>
+                    </>
+                  ) : (
+                    ''
+                  )}
                   <StripeCheckout
                     name='ShopMart'
                     image='https://cdn.pixabay.com/photo/2016/12/07/15/15/lotus-with-hands-1889661_960_720.png'
@@ -258,7 +279,12 @@ const CartScreen = () => {
                       variant='contained'
                       color='secondary'
                       sx={{ display: 'inline-block', width: '100%' }}
-                      disabled={!userInfo ? true : false}
+                      disabled={
+                        !userInfo ||
+                        !(cart && cart.cartItems && cart.cartItems.length > 0)
+                          ? true
+                          : false
+                      }
                     >
                       Checkout Now
                     </Button>
