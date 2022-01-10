@@ -16,7 +16,7 @@ const cartRoutes = require('./routes/carts');
 const orderRoutes = require('./routes/orders');
 const stripeRoutes = require('./routes/stripe');
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
