@@ -24,7 +24,7 @@ export const getProducts =
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       const { data } = await publicRequest.get(
-        `/products?category=${category}`
+        `/api/products?category=${category}`
       );
 
       dispatch({
@@ -46,7 +46,7 @@ export const getProductDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAIL_REQUEST });
 
-    const { data } = await publicRequest.get(`/products/${id}`);
+    const { data } = await publicRequest.get(`/api/products/${id}`);
 
     dispatch({
       type: PRODUCT_DETAIL_SUCCESS,
@@ -67,7 +67,7 @@ export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DELETE_REQUEST });
 
-    await userRequest.delete(`/products/${id}`);
+    await userRequest.delete(`/api/products/${id}`);
 
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
@@ -85,7 +85,7 @@ export const createProduct = (product) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST });
 
-    const { data } = await userRequest.post(`/products`, product);
+    const { data } = await userRequest.post(`/api/products`, product);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -106,7 +106,7 @@ export const updateProduct = (id, product) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
-    const { data } = await userRequest.put(`/products/${id}`, product);
+    const { data } = await userRequest.put(`/api/products/${id}`, product);
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

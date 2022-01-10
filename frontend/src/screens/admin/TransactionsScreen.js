@@ -17,7 +17,7 @@ const TransactionsScreen = () => {
     setUpdateSuccess(false);
     const getOrders = async () => {
       try {
-        const { data } = await userRequest.get(`/orders`);
+        const { data } = await userRequest.get(`/api/orders`);
         setOrders(data);
       } catch (err) {
         setMessage(err.message);
@@ -29,7 +29,7 @@ const TransactionsScreen = () => {
   const updateOrderStatus = async (orderId) => {
     if (window.confirm('Are you sure you want to update this order?')) {
       try {
-        await userRequest.put(`/orders/${orderId}`, {
+        await userRequest.put(`/api/orders/${orderId}`, {
           status: 'completed',
         });
         setUpdateSuccess(true);

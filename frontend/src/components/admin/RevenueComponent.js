@@ -14,7 +14,7 @@ const RevenueComponent = () => {
   useEffect(() => {
     const getIncome = async () => {
       try {
-        const { data } = await userRequest.get('/orders/stats');
+        const { data } = await userRequest.get('/api/orders/stats');
         const list = data.sort((a, b) => {
           return a._id - b._id;
         });

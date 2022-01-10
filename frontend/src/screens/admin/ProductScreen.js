@@ -135,7 +135,7 @@ const ProductScreen = () => {
     const getStats = async () => {
       try {
         const { data } = await userRequest.get(
-          '/orders/stats?pid=' + productId
+          '/api/orders/stats?pid=' + productId
         );
         const list = data.sort((a, b) => {
           return a._id - b._id;

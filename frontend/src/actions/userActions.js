@@ -1,4 +1,4 @@
-import { publicRequest, userRequest } from '../requestMethods';
+import { publicRequest } from '../requestMethods';
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -18,7 +18,7 @@ export const register = (username, email, password) => async (dispatch) => {
       type: USER_REGISTER_REQUEST,
     });
 
-    const { data } = await publicRequest.post('/auth/register', {
+    const { data } = await publicRequest.post('/api/auth/register', {
       username,
       email,
       password,
@@ -53,7 +53,7 @@ export const login = (username, password) => async (dispatch) => {
       type: USER_LOGIN_REQUEST,
     });
 
-    const { data } = await publicRequest.post('/auth/login', {
+    const { data } = await publicRequest.post('/api/auth/login', {
       username,
       password,
     });

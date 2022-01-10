@@ -9,7 +9,7 @@ const NewUsersComponent = () => {
   useEffect(() => {
     const getNewUserInfo = async () => {
       try {
-        const { data } = await userRequest.get(`/users?new=true`);
+        const { data } = await userRequest.get(`/api/users?new=true`);
         setNewUsers(data);
       } catch (err) {
         setMessage(err.message);

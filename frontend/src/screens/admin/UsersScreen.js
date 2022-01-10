@@ -13,7 +13,7 @@ const UsersScreen = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const { data } = await userRequest.get(`/users`);
+        const { data } = await userRequest.get(`/api/users`);
         setUsers(data);
       } catch (err) {
         setMessage(err.message);

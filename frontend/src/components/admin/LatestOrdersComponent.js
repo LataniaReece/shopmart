@@ -23,7 +23,7 @@ const LatestOrdersComponent = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const { data } = await userRequest.get(`/orders`);
+        const { data } = await userRequest.get(`/api/orders`);
         const list = data.sort(function (a, b) {
           var keyA = new Date(a.createdAt),
             keyB = new Date(b.createdAt);

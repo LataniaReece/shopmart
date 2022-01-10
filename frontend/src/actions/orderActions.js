@@ -17,7 +17,7 @@ export const getUserOrders = () => async (dispatch) => {
       type: GET_USER_ORDERS_REQUEST,
     });
 
-    const { data } = await userRequest.get(`/users/orders`);
+    const { data } = await userRequest.get(`/api/users/orders`);
 
     dispatch({
       type: GET_USER_ORDERS_SUCCESS,
@@ -40,7 +40,7 @@ export const createOrder = (orderInfo) => async (dispatch) => {
       type: ORDER_CREATE_REQUEST,
     });
 
-    const { data } = await userRequest.post(`/orders`, orderInfo);
+    const { data } = await userRequest.post(`/api/orders`, orderInfo);
 
     dispatch({
       type: ORDER_CREATE_SUCCESS,
@@ -63,7 +63,7 @@ export const getOrderDetails = (id) => async (dispatch) => {
       type: ORDER_DETAILS_REQUEST,
     });
 
-    const { data } = await userRequest.get(`/orders/${id}`);
+    const { data } = await userRequest.get(`/api/orders/${id}`);
 
     dispatch({
       type: ORDER_DETAILS_SUCCESS,

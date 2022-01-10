@@ -33,7 +33,7 @@ const DashboardScreen = () => {
   useEffect(() => {
     const getStats = async () => {
       try {
-        const { data } = await userRequest.get(`/users/stats`);
+        const { data } = await userRequest.get(`/api/users/stats`);
 
         const list = data.sort((a, b) => {
           return a._id - b._id;
