@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const Order = require('../models/order');
+const User = require('../models/User');
+const Order = require('../models/Order');
 const CryptoJs = require('crypto-js');
 const jwt = require('jsonwebtoken');
 
