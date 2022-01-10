@@ -56,6 +56,13 @@ const CartScreen = () => {
     setStripeToken(token);
   };
 
+  const handleClick = (e) => {
+    if (!userInfo || !(cart && cart.cartItems && cart.cartItems.length > 0)) {
+      e.stopPropagation();
+      window.alert('Please log in to check out');
+    }
+  };
+
   useEffect(() => {
     const makeRequest = async (cartTotal) => {
       try {
@@ -123,15 +130,7 @@ const CartScreen = () => {
                 token={onToken}
                 stripeKey={KEY}
               >
-                <Button
-                  variant='outlined'
-                  disabled={
-                    !userInfo ||
-                    !(cart && cart.cartItems && cart.cartItems.length > 0)
-                      ? true
-                      : false
-                  }
-                >
+                <Button variant='outlined' onClick={handleClick}>
                   Checkout
                 </Button>
               </StripeCheckout>
@@ -279,12 +278,7 @@ const CartScreen = () => {
                       variant='contained'
                       color='secondary'
                       sx={{ display: 'inline-block', width: '100%' }}
-                      disabled={
-                        !userInfo ||
-                        !(cart && cart.cartItems && cart.cartItems.length > 0)
-                          ? true
-                          : false
-                      }
+                      onClick={handleClick}
                     >
                       Checkout Now
                     </Button>
