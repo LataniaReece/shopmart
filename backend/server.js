@@ -29,10 +29,6 @@ app.use('/api/carts', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/checkout', stripeRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Api is running....');
-});
-
 var __dirname = path.resolve();
 
 const PORT = process.env.PORT || 5000;
