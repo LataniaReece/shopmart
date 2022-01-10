@@ -24,6 +24,7 @@ module.exports.getAllProducts = async (req, res) => {
 
     return res.status(200).json(products);
   } catch (error) {
+    console.log(error);
     return res.status(404).json({ message: error.message });
   }
 };
