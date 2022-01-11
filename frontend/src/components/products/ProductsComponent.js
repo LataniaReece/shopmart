@@ -14,7 +14,7 @@ import ProductListComponent from './ProductListComponent';
 
 const ProductsComponent = ({ home = false, category }) => {
   const [filters, setFilters] = useState({ color: '', size: '' });
-  const [sort, setSort] = useState('newest');
+  const [sort, setSort] = useState('');
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -115,7 +115,6 @@ const ProductsComponent = ({ home = false, category }) => {
                   setSort(e.target.value);
                 }}
               >
-                <MenuItem value={'newest'}>Newest</MenuItem>
                 <MenuItem value={'desc'}>Price: High To Low</MenuItem>
                 <MenuItem value={'asc'}>Price: Low To High</MenuItem>
               </Select>

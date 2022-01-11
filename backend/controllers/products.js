@@ -4,22 +4,19 @@ const Product = require('../models/Product');
 // @route   GET /api/products
 // @access  Public
 module.exports.getAllProducts = async (req, res) => {
-  const qNew = req.query.new;
   const qCategory = req.query.category;
 
   try {
     let products;
 
-    if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
-    } else if (qCategory) {
+    if (qCategory) {
       products = await Product.find({
         categories: {
           $in: [qCategory],
         },
-      });
+      }).sort({ createdAt: -1 });
     } else {
-      products = await Product.find();
+      products = await Product.find().sort({ createdAt: -1 });
     }
 
     return res.status(200).json(products);
