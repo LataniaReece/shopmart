@@ -11,7 +11,7 @@ const OrderSuccess = () => {
       sx={{ textAlign: 'center', height: '80vh', mt: 5 }}
       className='order-success'
     >
-      <Typography variant='h4'>
+      <Typography variant='h4' className='order-id-success'>
         <span style={{ fontWeight: 'bold' }}>Order Number: </span>
         {history.location.state.paymentInfo._id}
       </Typography>

@@ -254,6 +254,18 @@ a {
   margin-right: 1rem;
 }
 
+@media screen and (max-width: 500px) {
+  .order-id-success {
+    font-size: 1.25rem !important;
+  }
+
+  .order-success img {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+  }
+}
+
 /* ==================================== Order Details ======================================= */
 
 .order-details .info {
