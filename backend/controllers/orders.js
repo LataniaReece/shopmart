@@ -18,9 +18,9 @@ module.exports.getAllOrders = async (req, res) => {
 // @access  Private
 module.exports.findUserOrder = async (req, res) => {
   try {
-    const order = await Order.find({ user: req.params.userId }).populate(
-      'user'
-    );
+    const order = await Order.find({ user: req.params.userId })
+      .sort({ createdAt: -1 })
+      .populate('user');
     return res.status(200).json(order);
   } catch (error) {
     return res.status(500).json({ message: error.message });
