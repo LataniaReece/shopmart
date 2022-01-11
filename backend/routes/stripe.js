@@ -13,7 +13,6 @@ router.post('/payment', verifyUser, (req, res) => {
       if (stripeErr) {
         res.status(500).json(stripeErr);
       } else {
-        console.log(stripeRes);
         res.status(200).json(stripeRes);
       }
     }

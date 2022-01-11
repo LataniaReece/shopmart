@@ -85,7 +85,7 @@ const CartScreen = () => {
         setMessage(error.message);
       }
     };
-    stripeToken && makeRequest(cart.total * 100 + 4.99 + 5.0);
+    stripeToken && makeRequest((cart.total + 4.99 + 5.0) * 100);
   }, [stripeToken, cart]);
 
   const handleItemRemoval = (item) => {
