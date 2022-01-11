@@ -125,9 +125,7 @@ const CartScreen = () => {
                 image='https://cdn.pixabay.com/photo/2016/12/07/15/15/lotus-with-hands-1889661_960_720.png'
                 billingAddress
                 shippingAddress
-                description={`Your total is $${
-                  (cart.total + 4.99 + 5.0) * 100
-                }`}
+                description={`Your total is $${cart.total + 4.99 + 5.0}`}
                 amount={(cart.total + 4.99 + 5.0) * 100}
                 token={onToken}
                 stripeKey={KEY}
@@ -271,9 +269,7 @@ const CartScreen = () => {
                     image='https://cdn.pixabay.com/photo/2016/12/07/15/15/lotus-with-hands-1889661_960_720.png'
                     billingAddress
                     shippingAddress
-                    description={`Your total is $${
-                      (cart.total + 4.99 + 5.0) * 100
-                    }`}
+                    description={`Your total is $${cart.total + 4.99 + 5.0}`}
                     amount={(cart.total + 4.99 + 5.0) * 100}
                     token={onToken}
                     stripeKey={KEY}
