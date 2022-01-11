@@ -65,6 +65,7 @@ const CartScreen = () => {
 
   useEffect(() => {
     const makeRequest = async (cartTotal) => {
+      console.log(cartTotal);
       try {
         const res = await userRequest.post(`/api/checkout/payment`, {
           tokenId: stripeToken.id,
@@ -85,7 +86,7 @@ const CartScreen = () => {
         setMessage(error.message);
       }
     };
-    stripeToken && makeRequest((cart.total + 4.99 + 5.0) * 100);
+    stripeToken && makeRequest((cart.total + 5 + 5) * 100);
   }, [stripeToken, cart]);
 
   const handleItemRemoval = (item) => {
@@ -125,8 +126,8 @@ const CartScreen = () => {
                 image='https://cdn.pixabay.com/photo/2016/12/07/15/15/lotus-with-hands-1889661_960_720.png'
                 billingAddress
                 shippingAddress
-                description={`Your total is $${cart.total + 4.99 + 5.0}`}
-                amount={(cart.total + 4.99 + 5.0) * 100}
+                description={`Your total is $${cart.total + 5 + 5}`}
+                amount={(cart.total + 5 + 5) * 100}
                 token={onToken}
                 stripeKey={KEY}
               >
@@ -232,7 +233,7 @@ const CartScreen = () => {
                         }}
                       >
                         <Typography variant='p'>Shipping & Handling</Typography>
-                        <Typography variant='p'>$5.00</Typography>
+                        <Typography variant='p'>$5</Typography>
                       </div>
                       <div
                         className='order-summary-detail'
@@ -244,7 +245,7 @@ const CartScreen = () => {
                         }}
                       >
                         <Typography variant='p'>Tax</Typography>
-                        <Typography variant='p'>$4.99</Typography>
+                        <Typography variant='p'>$5</Typography>
                       </div>
                       <div
                         className='order-summary-detail'
@@ -257,7 +258,7 @@ const CartScreen = () => {
                       >
                         <Typography variant='p'>Grand Total</Typography>
                         <Typography variant='p'>
-                          ${cart.total + 4.99 + 5.0}
+                          ${cart.total + 5 + 5}
                         </Typography>
                       </div>
                     </>
@@ -269,8 +270,8 @@ const CartScreen = () => {
                     image='https://cdn.pixabay.com/photo/2016/12/07/15/15/lotus-with-hands-1889661_960_720.png'
                     billingAddress
                     shippingAddress
-                    description={`Your total is $${cart.total + 4.99 + 5.0}`}
-                    amount={(cart.total + 4.99 + 5.0) * 100}
+                    description={`Your total is $${cart.total + 5 + 5}`}
+                    amount={(cart.total + 5 + 5) * 100}
                     token={onToken}
                     stripeKey={KEY}
                   >
