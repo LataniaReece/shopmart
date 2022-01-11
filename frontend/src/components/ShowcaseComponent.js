@@ -18,6 +18,7 @@ const ShowcaseComponent = () => {
                   fontWeight: 'medium',
                   letterSpacing: 2,
                 }}
+                className='showcase-welcome'
               >
                 Welcome to ShopMart
               </Typography>

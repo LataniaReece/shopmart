@@ -103,24 +103,28 @@ const Navbar = () => {
             )}
             {userInfo && userInfo._id ? (
               <>
-                <Link to={'/orders'}>
-                  <Button color='inherit'>My Orders</Button>
+                <Link to={'/orders'} className='nav-link'>
+                  <Button color='inherit'>Orders</Button>
                 </Link>
                 {userInfo.isAdmin && (
-                  <Link to={'/admin'}>
+                  <Link to={'/admin'} className='nav-link'>
                     <Button color='inherit'>Admin</Button>
                   </Link>
                 )}
-                <Link to='#' onClick={() => logoutHandler()}>
+                <Link
+                  to='#'
+                  onClick={() => logoutHandler()}
+                  className='nav-link'
+                >
                   <Button color='inherit'>Logout</Button>
                 </Link>
               </>
             ) : (
               <>
-                <Link to={'/login'}>
+                <Link to={'/login'} className='nav-link'>
                   <Button color='inherit'>Login</Button>
                 </Link>
-                <Link to={'/register'}>
+                <Link to={'/register'} className='nav-link'>
                   <Button color='inherit'>Register</Button>
                 </Link>
               </>
