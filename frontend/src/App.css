@@ -33,6 +33,12 @@ a {
   }
 }
 
+@media screen and (max-width: 445px) {
+  .logo {
+    display: none;
+  }
+}
+
 .showcase-img {
   height: 400px;
   background-image: url('https://images.unsplash.com/photo-1601924994987-69e26d50dc26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1740&q=80');
