@@ -74,7 +74,7 @@ const UserTransactionsScreen = () => {
       headerName: 'Amount',
       width: 200,
       renderCell: (params) => {
-        return <Typography>${params.row.amount}</Typography>;
+        return <Typography>${params.row.amount / 100}</Typography>;
       },
     },
     { field: 'amount', headerName: 'Amount', width: 150 },

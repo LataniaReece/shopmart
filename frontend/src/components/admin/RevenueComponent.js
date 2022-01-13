@@ -23,6 +23,7 @@ const RevenueComponent = () => {
         } else {
           setIncome(list);
         }
+        console.log(list[1].total - list[0].total);
         setPerc((list[1].total * 100) / list[0].total - 100);
       } catch (err) {
         setMessage(err.message);
@@ -40,7 +41,7 @@ const RevenueComponent = () => {
           {message && <AlertClosable message={message} variant='error' />}
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography component='p' variant='p' sx={{ fontSize: 30, my: 2 }}>
-              ${income[1].total / 100}
+              ${income[1].total / 100 - income[0].total / 100}
             </Typography>
             <Typography
               component='p'

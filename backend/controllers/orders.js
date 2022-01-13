@@ -95,13 +95,13 @@ module.exports.deleteOrder = async (req, res) => {
 // @route   GET /api/orders/stats
 // @access  Private/Admin
 module.exports.getMonthlyIncome = async (req, res) => {
-  const prevMonth = DateTime.local().minus({ months: 1 });
+  const twoMonthsAgo = DateTime.local().minus({ months: 2 });
 
   try {
     const income = await Order.aggregate([
       {
         $match: {
-          createdAt: { $gte: prevMonth },
+          createdAt: { $gte: twoMonthsAgo },
         },
       },
       {

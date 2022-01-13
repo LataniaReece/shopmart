@@ -131,7 +131,7 @@ const OrderDetailScreen = () => {
                     }}
                   >
                     <Typography variant='p'>Tax</Typography>
-                    <Typography variant='p'>$4.99</Typography>
+                    <Typography variant='p'>$5.00</Typography>
                   </div>
                   <div
                     className='order-summary-detail'
@@ -144,7 +144,7 @@ const OrderDetailScreen = () => {
                   >
                     <Typography variant='p'>Grand Total</Typography>
                     <Typography variant='p'>
-                      ${order.amount / 100 + 5.0 + 4.99}
+                      ${order.amount / 100 + 5.0 + 5.0}
                     </Typography>
                   </div>
                 </Box>

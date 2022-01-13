@@ -67,7 +67,7 @@ const OrdersScreen = () => {
                       Total
                     </Typography>
                     <Typography component='p' variant='p'>
-                      ${order.amount}
+                      ${order.amount / 100}
                     </Typography>
                   </div>
                   <div>

@@ -32,7 +32,7 @@ const LatestOrdersComponent = () => {
           if (keyA < keyB) return 1;
           return 0;
         });
-        setOrders(list);
+        setOrders(list.splice(0, 5));
       } catch (err) {
         setMessage(err.message);
       }

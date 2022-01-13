@@ -217,16 +217,6 @@ const ProductScreen = () => {
                       width: '70%',
                     }}
                   >
-                    <Typography component='p'>Sales:</Typography>
-                    <Typography component='p'>{product.title}</Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '70%',
-                    }}
-                  >
                     <Typography component='p'>Active:</Typography>
                     <Typography component='p'>true</Typography>
                   </Box>
